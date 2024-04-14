@@ -11,7 +11,6 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { BsTelephone } from 'react-icons/bs';
-import { format } from 'date-fns';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { FaAirbnb, FaUtensils } from 'react-icons/fa';
 import { CgComment } from 'react-icons/cg';
