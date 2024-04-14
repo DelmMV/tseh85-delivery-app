@@ -7,6 +7,8 @@
     "dev": "vite",
     "start": "vite preview",
     "build": "vite build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "server": "json-server -w db.json --host 192.168.1.101 --port 3001 "
@@ -24,6 +26,7 @@
     "@tanstack/react-query": "^5.29.2",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.0.28",
+    "ghpages": "^0.0.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
