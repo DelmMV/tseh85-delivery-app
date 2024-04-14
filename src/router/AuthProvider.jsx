@@ -1,4 +1,6 @@
-import React, { useContext, createContext, useState } from 'react';
+import React, {
+  useContext, createContext, useState, useEffect,
+} from 'react';
 
 const AuthContext = createContext();
 
@@ -6,6 +8,13 @@ export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setUser(token);
+    }
+  }, []);
 
   const loginApp = async (login, password) => {
     try {
@@ -19,9 +28,9 @@ export function AuthProvider({ children }) {
       if (!response.ok) {
         throw new Error('Ошибка логина');
       }
-      const data = response.headers.get('Token');
-      localStorage.setItem('token', data);
-      setUser({ token: data.token });
+      const token = response.headers.get('Token'); // Получаем токен из заголовков
+      localStorage.setItem('token', token); // Сохраняем токен в localStorage
+      setUser(token); // Устанавливаем токен в состояние пользователя
     } catch (error) {
       console.error('Ошибка при логине:', error);
     }

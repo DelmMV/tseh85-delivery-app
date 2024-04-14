@@ -1,31 +1,47 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
-async function fetchOrders() {
-  const acesToken = localStorage.getItem('token'); // Получаем токен из localStorage
-  console.log(acesToken);
+// Создаем функцию для генерации ошибки авторизации
+const createAuthorizationError = (message) => {
+  const error = new Error(message);
+  error.name = 'AuthorizationError';
+  error.status = 401;
+  return error;
+};
+
+// Функция для выполнения запроса
+const fetchOrders = async () => {
+  const acesToken = localStorage.getItem('token');
   const response = await fetch('https://app.tseh85.com/Service/api/delivery/orders?LastUpdateTicks=0', {
-    method: 'GET', // Явное указание метода GET
+    method: 'GET',
     headers: {
       'content-type': 'application/json',
       token: acesToken,
     },
   });
+
   if (!response.ok) {
-    throw new Error('Сетевой запрос не удался');
+    throw response.status === 401 ? createAuthorizationError('Unauthorized') : new Error('Сетевой запрос не удался');
   }
+
   return response.json();
-}
+};
 
 export function useOrdersQuery() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
   return useQuery({
     queryKey: ['orders'],
     queryFn: fetchOrders,
     onError: (err) => {
-      if (err instanceof Error) {
-        return Error;
+      // Проверяем, является ли ошибка экземпляром Error и имеет ли она свойство status
+      if (err instanceof Error && 'status' in err && err.status === 401) {
+        navigate('/login'); // Перенаправляем на страницу логина
+      } else {
+        // Обрабатываем другие типы ошибок
+        console.error('Произошла ошибка при запросе заказов:', err);
       }
-      return null;
     },
     staleTime: 5 * 60 * 1000,
     cacheTime: 30 * 60 * 1000, // Кэшированные данные удаляются через 30 минут неактивности

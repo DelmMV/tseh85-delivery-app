@@ -5,7 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import icons from './public/icons.json';
 
 export default defineConfig({
-  base: 'tseh85-delivery-app',
+  base: '/tseh85-delivery-app',
   plugins: [
     VitePWA({
       manifest: {
