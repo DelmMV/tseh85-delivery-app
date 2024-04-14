@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { extendTheme, ChakraProvider } from '@chakra-ui/react';
 import App from './App';
+import { AuthProvider } from './router/AuthProvider';
 import './index.css';
 import 'leaflet/dist/leaflet.css';
 import '@fontsource/open-sans';
@@ -28,8 +29,10 @@ const theme = extendTheme({
 const rootElement = document.getElementById('root');
 ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
-    <ChakraProvider theme={theme}>
-      <App />
-    </ChakraProvider>
+    <AuthProvider>
+      <ChakraProvider theme={theme}>
+        <App />
+      </ChakraProvider>
+    </AuthProvider>
   </React.StrictMode>,
 );

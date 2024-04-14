@@ -1,8 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-// const response = await fetch('http://192.168.1.101:3001/purchases', {
-//   method: 'GET', // Явное указание метода
-// });
+
 export function useOrderQuery(id) {
+  const acesToken = localStorage.getItem('token'); // Получаем токен из localStorage
   return useQuery({
     queryKey: ['order', id],
     queryFn: async () => {
@@ -11,7 +10,7 @@ export function useOrderQuery(id) {
           method: 'GET', // Явное указание метода GET
           headers: {
             'content-type': 'application/json',
-            token: '4Mm9jOfrue15Roj/Ghltdwp7TMqjDyxS+0ScGZ2GQYEeaTBpbTX7p5MZUUkT8oNA',
+            token: acesToken,
           },
         });
         if (!response.ok) {

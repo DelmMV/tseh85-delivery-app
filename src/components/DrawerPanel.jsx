@@ -9,10 +9,23 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { HamburgerIcon } from '@chakra-ui/icons';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../router/AuthProvider';
 
 function DrawerPanel() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      await logout();
+      navigate('/login');
+    } catch (error) {
+      console.error('Ошибка при попытке выходе', error);
+    }
+  };
 
   return (
     <>
@@ -31,14 +44,14 @@ function DrawerPanel() {
           <DrawerHeader>Create your account</DrawerHeader>
 
           <DrawerBody>
-            <Input placeholder="Type here..." />
+            Здесь что-то будет
           </DrawerBody>
 
-          <DrawerFooter>
+          <DrawerFooter display="flex" justifyContent="space-between">
             <Button variant="outline" mr={3} onClick={onClose}>
-              Cancel
+              Закрыть
             </Button>
-            <Button colorScheme="blue">Save</Button>
+            <Button bg="red.700" onClick={handleLogout}>Выйти</Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

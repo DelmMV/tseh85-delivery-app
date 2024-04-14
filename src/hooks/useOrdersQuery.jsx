@@ -1,16 +1,13 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-// https://app.tseh85.com/Service/api/delivery/orders?LastUpdateTicks=0
-// headers: {
-//   'content-type': 'application/json',
-//       token: '4Mm9jOfrue15Roj/Ghltdwp7TMqjDyxS+0ScGZ2GQYEeaTBpbTX7p5MZUUkT8oNA',
-// },
 
 async function fetchOrders() {
+  const acesToken = localStorage.getItem('token'); // Получаем токен из localStorage
+  console.log(acesToken);
   const response = await fetch('https://app.tseh85.com/Service/api/delivery/orders?LastUpdateTicks=0', {
     method: 'GET', // Явное указание метода GET
     headers: {
       'content-type': 'application/json',
-      token: '4Mm9jOfrue15Roj/Ghltdwp7TMqjDyxS+0ScGZ2GQYEeaTBpbTX7p5MZUUkT8oNA',
+      token: acesToken,
     },
   });
   if (!response.ok) {
