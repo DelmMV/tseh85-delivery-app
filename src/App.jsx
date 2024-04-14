@@ -1,5 +1,5 @@
 import React from 'react';
-import { RouterProvider } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom'; // Изменение здесь
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { FilterProvider } from './contexts/FilterContext';
 import { SearchProvider } from './contexts/SearchContext';
@@ -14,7 +14,7 @@ function App() {
       <SelectorFilterProvider>
         <FilterProvider>
           <QueryClientProvider client={queryClient}>
-            <RouterProvider router={router} />
+            <Router router={router} />
           </QueryClientProvider>
         </FilterProvider>
       </SelectorFilterProvider>
