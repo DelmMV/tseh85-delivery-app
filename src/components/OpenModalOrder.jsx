@@ -33,6 +33,8 @@ function OpenModalOrder({
           <Image
             marginRight="6px"
             borderRadius="10px"
+            borderWidth="0"
+            boxShadow="md"
             width="45px"
             height="45px"
             src={product.PictureId ? `https://app.tseh85.com/Service/api/image?PictureId=${product.PictureId}` : plugImg}

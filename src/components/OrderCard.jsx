@@ -8,32 +8,24 @@ import {
   Card,
   CardBody, Divider, Link,
   Stack,
-  Text,
+  Text, useToast,
 } from '@chakra-ui/react';
 import { BsTelephone } from 'react-icons/bs';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { FaAirbnb, FaUtensils } from 'react-icons/fa';
 import { CgComment } from 'react-icons/cg';
-import { useEffect, useState } from 'react';
 import { PiFaceMaskThin } from 'react-icons/pi';
+import { LuClipboardCopy } from 'react-icons/lu';
 import { OpenModalOrder } from './OpenModalOrder';
 import { status } from '../utils/status';
 import { convertTimestamp } from '../utils/convertTimestamp';
+import { useMapType } from '../contexts/MapTypeContext';
 
 function OrderCard({ order }) {
   const {
     Price, QuantityPurchases, Address, ClientComment, OrderId, DateOrder, Wishes, WishingDate, ClientName, ClientPhone, DeliveryNumber, Status, CheckoutUserName, Nearest,
   } = order;
-  const [mapType, setMapType] = useState(() => {
-    const savedMapType = localStorage.getItem('mapType');
-    return savedMapType || 'yandex';
-  });
-
-  // Сохранение выбранного типа карты в localStorage при изменении
-  useEffect(() => {
-    localStorage.setItem('mapType', mapType);
-  }, [mapType]);
-
+  const { mapType } = useMapType(); // Использование хука useMapType
   function createMapLink(address) {
     if (mapType === 'yandex') {
       return `https://yandex.ru/maps/?text=${encodeURIComponent(address)}`;
@@ -42,7 +34,6 @@ function OrderCard({ order }) {
     }
     return null;
   }
-
   function renderIconComments(comments) {
     if (!comments || comments.length === 0) {
       return null; // Если массив пуст или отсутствует, возвращаем null
@@ -52,13 +43,13 @@ function OrderCard({ order }) {
 
   function renderTextWishes(wishes) {
     if (!wishes || wishes.length === 0) {
-      return null; // Если массив пуст или отсутствует, возвращаем null
+      return null;
     }
 
     return (
       <Box display="flex" flexDirection="row" alignItems="center">
         <Text fontSize="sm">Пожелания:</Text>
-        <Box display="flex" flexDirection="column">
+        <Box display="flex" flexDirection="column" alignItems="flex-start">
           {wishes.map((wish) => (
             <Text key={wish.ID} fontSize="md" marginLeft="10px" fontWeight="bold">
               {wish.Name}
@@ -70,7 +61,7 @@ function OrderCard({ order }) {
   }
   function renderIconWishes(wishes) {
     if (!wishes || wishes.length === 0) {
-      return null; // Если массив пуст или отсутствует, возвращаем null
+      return null;
     }
 
     return wishes.map((wish) => {
@@ -99,6 +90,40 @@ function OrderCard({ order }) {
     });
   }
   const statusInfo = status(Status);
+  const toast = useToast();
+  function copyToClipboard(text) {
+    // Создаем временный элемент input
+    const tempInput = document.createElement('input');
+    tempInput.style.position = 'absolute';
+    tempInput.style.left = '-1000px';
+    tempInput.style.top = '-1000px';
+    tempInput.value = text;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    tempInput.setSelectionRange(0, 99999); // Для мобильных устройств
+
+    try {
+      const successful = document.execCommand('copy');
+      toast({
+        title: successful ? 'Скопировано' : 'Ошибка',
+        status: successful ? 'success' : 'error',
+        duration: 1000,
+        isClosable: true,
+        position: 'bottom-right',
+      });
+    } catch (err) {
+      toast({
+        title: 'Ошибка',
+        description: 'Не удалось скопировать номер доставки.',
+        status: 'error',
+        duration: 1000,
+        isClosable: true,
+      });
+    }
+
+    // Удаляем временный элемент
+    document.body.removeChild(tempInput);
+  }
 
   return (
     <Card
@@ -120,11 +145,14 @@ function OrderCard({ order }) {
                 <Box as="span" flex="1" textAlign="left">
                   <Stack spacing="1">
                     <Box display="flex" flexDirection="row" justifyContent="space-between">
-                      <Box>
-                        <Text fontSize="md" fontWeight="bold">
-                          №
-                          {DeliveryNumber}
-                        </Text>
+                      <Box display="flex" flexDirection="row" alignItems="center" onClick={() => copyToClipboard(DeliveryNumber)}>
+                        <Button variant="outline" width="100px" height="18px" padding="5px 0 5px 0" borderWidth="0">
+                          <Text fontSize="md" fontWeight="bold" marginRight="2px">
+                            №
+                            {DeliveryNumber}
+                          </Text>
+                          <LuClipboardCopy />
+                        </Button>
                       </Box>
                       <Box display="flex" flexDirection="row" alignItems="center">
                         <Box marginRight="10px">{renderIconComments(ClientComment)}</Box>
@@ -207,7 +235,7 @@ function OrderCard({ order }) {
                         <Box>
                           {ClientComment
                                   && (
-                                  <Box display="flex" flexDirection="row" alignItems="center">
+                                  <Box display="flex" flexDirection="row" alignItems="flex-start">
                                     <Text fontSize="sm">Комментарий:&#160;</Text>
                                     <Text fontWeight="bold">{ClientComment}</Text>
                                   </Box>

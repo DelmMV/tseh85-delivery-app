@@ -17,7 +17,7 @@ function Login() {
     e.preventDefault();
     try {
       await loginApp(username, password);
-      navigate('/');
+      navigate('/', { replace: true });
     } catch (error) {
       console.error('Ошибка при попытке входа', error);
     }

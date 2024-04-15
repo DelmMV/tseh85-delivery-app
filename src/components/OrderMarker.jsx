@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Marker, Tooltip } from 'react-leaflet';
-import {Box, Link, Text} from '@chakra-ui/react';
+import { Box, Link, Text } from '@chakra-ui/react';
 import { status } from '../utils/status';
 import { convertTimestamp } from '../utils/convertTimestamp';
+import { useMapType } from '../contexts/MapTypeContext';
 
 function OrderMarker({ order }) {
   const statusInfo = status(order.Status);
-  const [mapType, setMapType] = useState(() => {
-    const savedMapType = localStorage.getItem('mapType');
-    return savedMapType || 'yandex';
-  });
-
-  // Сохранение выбранного типа карты в localStorage при изменении
-  useEffect(() => {
-    localStorage.setItem('mapType', mapType);
-  }, [mapType]);
+  const { mapType } = useMapType();
 
   function createMapLink(address) {
     if (mapType === 'yandex') {
@@ -27,7 +20,7 @@ function OrderMarker({ order }) {
   return (
     <Marker position={[order.Latitude, order.Longitude]}>
       <Tooltip direction="right" offset={[0, 0]} opacity={1} permanent interactive>
-        <Text color={statusInfo.color}>
+        <Text color={statusInfo.color} fontWeight="bold">
           Заказ №
           {order.DeliveryNumber}
         </Text>

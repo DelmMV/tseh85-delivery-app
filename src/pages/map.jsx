@@ -1,18 +1,12 @@
-import React, {
-  useCallback, useEffect, useMemo, useState,
-} from 'react';
-import {
-  MapContainer, TileLayer,
-} from 'react-leaflet';
-import {
-  AspectRatio, Box, Button, Link, Menu, MenuButton, MenuItem, MenuList, Portal,
-} from '@chakra-ui/react';
+import React, { useMemo } from 'react';
+import { MapContainer, TileLayer } from 'react-leaflet';
+import { AspectRatio } from '@chakra-ui/react';
 import { useOrdersQuery } from '../hooks/useOrdersQuery';
 import { useFilter } from '../contexts/FilterContext';
 import { useSearch } from '../contexts/SearchContext';
 import { useSelectorFilter } from '../contexts/SelectorFilterContext';
 import 'react-leaflet-markercluster/dist/styles.min.css';
-import OrderMarker from '../components/OrderMarker'; // Assuming you'll use it now
+import OrderMarker from '../components/OrderMarker';
 
 function MapComponent() {
   const { data: orders } = useOrdersQuery();

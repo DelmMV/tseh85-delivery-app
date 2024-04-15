@@ -12,7 +12,7 @@ export default defineConfig({
         name: 'Доставка85',
         short_name: 'Доставка85',
         description: 'Приложения для доставки заказов',
-        theme_color: '#722020',
+        theme_color: '#72202000',
         icons: icons.icons,
       },
       registerType: 'autoUpdate',

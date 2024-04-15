@@ -1,29 +1,11 @@
 import {
-  Box, Card, IconButton, Tab, TabList, Tabs, useColorMode,
+  Box, Card, Image, Tab, TabList, Tabs, useColorMode,
 } from '@chakra-ui/react';
 import React from 'react';
-import {
-  MoonIcon, SunIcon,
-} from '@chakra-ui/icons';
 import { SelectorFilter } from './SelectorFilter';
 import { DrawerPanel } from './DrawerPanel';
 import { InputFilter } from './InputFilter';
 import { useFilter } from '../contexts/FilterContext';
-
-function ThemeToggle() {
-  const { colorMode, toggleColorMode } = useColorMode();
-  const isLightMode = colorMode === 'light';
-
-  return (
-    <IconButton
-      onClick={toggleColorMode}
-      aria-label="theme"
-      variant="solid"
-      fontSize="20px"
-      icon={isLightMode ? <MoonIcon /> : <SunIcon />}
-    />
-  );
-}
 
 function NavBar() {
   const { colorMode } = useColorMode();
@@ -47,7 +29,6 @@ function NavBar() {
             <SelectorFilter />
             <InputFilter />
           </Box>
-          <ThemeToggle />
         </Box>
         <Box marginTop="8px">
           <Tabs isFitted>

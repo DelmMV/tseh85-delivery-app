@@ -24,6 +24,7 @@
     "@react-buddy/palette-chakra-ui": "^2.3.1",
     "@react-leaflet/core": "^2.1.0",
     "@tanstack/react-query": "^5.29.2",
+    "clipboard.js": "^1.0.1",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.0.28",
     "ghpages": "^0.0.10",
