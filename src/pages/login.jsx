@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box, Button, Input, InputGroup, InputRightElement, Stack,
-  Image,
+  Image, useToast,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/image/logo-t85.jpeg';
 import { useAuth } from '../router/AuthProvider';
+import { useOrdersQuery } from '../hooks/useOrdersQuery.jsx';
 
 function Login() {
   const [show, setShow] = useState(false);
@@ -13,15 +14,30 @@ function Login() {
   const [password, setPassword] = useState('');
   const { loginApp } = useAuth();
   const navigate = useNavigate();
+  const toast = useToast();
+  const { error } = useOrdersQuery();
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       await loginApp(username, password);
       navigate('/', { replace: true });
-    } catch (error) {
-      console.error('Ошибка при попытке входа', error);
+    } catch (loginError) { // Renamed 'error' to 'loginError'
+      console.error('Ошибка при попытке входа', loginError);
     }
   };
+
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: 'Ошибка',
+        description: error.message,
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+        position: 'bottom-right',
+      });
+    }
+  }, [error, toast]);
   const handleClick = () => setShow(!show);
   return (
     <Box display="flex" justifyContent="space-around" flexDirection="column" alignItems="center" zIndex="20">
