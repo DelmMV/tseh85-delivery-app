@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
 import { Marker, Tooltip } from 'react-leaflet';
 import { Box, Link, Text } from '@chakra-ui/react';
+import L from 'leaflet';
 import { status } from '../utils/status';
 import { convertTimestamp } from '../utils/convertTimestamp';
 import { useMapType } from '../contexts/MapTypeContext';
@@ -17,8 +17,15 @@ function OrderMarker({ order }) {
     }
     return null;
   }
+
+  const transparentIcon = L.icon({
+    iconUrl: 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==', // 1x1 transparent GIF
+    iconSize: [1, 1], // Small size
+    iconAnchor: [0.5, 0.5], // Centered
+  });
+
   return (
-    <Marker position={[order.Latitude, order.Longitude]}>
+    <Marker position={[order.Latitude, order.Longitude]} icon={transparentIcon}>
       <Tooltip direction="right" offset={[0, 0]} opacity={1} permanent interactive>
         <Text color={statusInfo.color} fontWeight="bold">
           Заказ №
