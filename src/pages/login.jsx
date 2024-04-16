@@ -6,12 +6,13 @@ import {
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/image/logo-t85.jpeg';
 import { useAuth } from '../router/AuthProvider';
-import { useOrdersQuery } from '../hooks/useOrdersQuery.jsx';
+import { useOrdersQuery } from '../hooks/useOrdersQuery';
 
 function Login() {
   const [show, setShow] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [token, setToken] = useState('');
   const { loginApp } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
@@ -23,6 +24,16 @@ function Login() {
       navigate('/', { replace: true });
     } catch (loginError) { // Renamed 'error' to 'loginError'
       console.error('Ошибка при попытке входа', loginError);
+    }
+  };
+
+  const handleLoginWithToken = async (e) => {
+    e.preventDefault();
+    try {
+      await loginApp(null, null, token); // Предполагается, что loginApp может принимать токен как третий аргумент
+      navigate('/', { replace: true });
+    } catch (loginError) {
+      console.error('Ошибка при попытке входа с токеном', loginError);
     }
   };
 
@@ -66,6 +77,16 @@ function Login() {
           </InputRightElement>
         </InputGroup>
         <Button onClick={handleLogin} variant="outline" borderWidth="3px" minWidth="320px" maxWidth="400px" marginTop="30px">Войти</Button>
+        <InputGroup size="md" minWidth="320px" maxWidth="400px" marginTop="30px">
+          <Input
+            pr="4.5rem"
+            type="text"
+            placeholder="Введите токен"
+            value={token}
+            onChange={(e) => setToken(e.target.value)}
+          />
+        </InputGroup>
+        <Button onClick={handleLoginWithToken} variant="outline" borderWidth="3px" minWidth="320px" maxWidth="400px">Войти с токеном</Button>
       </Stack>
     </Box>
   );

@@ -1,5 +1,5 @@
 import React, {
-  useContext, createContext, useState, useEffect,
+  useContext, createContext, useState, useEffect, useMemo,
 } from 'react';
 
 const AuthContext = createContext();
@@ -16,8 +16,13 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  const loginApp = async (login, password) => {
+  const loginApp = async (login, password, token = null) => {
     try {
+      if (token) {
+        localStorage.setItem('token', token);
+        setUser(token);
+        return { success: true }; // Explicitly return a success object
+      }
       const response = await fetch('https://app.tseh85.com/Service/api/AuthenticateDelivery', {
         method: 'POST',
         headers: {
@@ -26,13 +31,15 @@ export function AuthProvider({ children }) {
         body: JSON.stringify({ login, password }),
       });
       if (!response.ok) {
-        throw new Error('Ошибка логина');
+        return { success: false, message: 'Ошибка логина' }; // Return on error
       }
-      const token = response.headers.get('Token'); // Получаем токен из заголовков
-      localStorage.setItem('token', token); // Сохраняем токен в localStorage
-      setUser(token); // Устанавливаем токен в состояние пользователя
+      const authToken = response.headers.get('Token');
+      localStorage.setItem('token', authToken);
+      setUser(authToken);
+      return { success: true }; // Return on success
     } catch (error) {
       console.error('Ошибка при логине:', error);
+      return { success: false, message: error.message }; // Return on exception
     }
   };
 
@@ -41,10 +48,11 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
-  const value = {
+  const value = useMemo(() => ({
     user,
     loginApp,
     logout,
-  };
+  }), [user, loginApp, logout]);
+
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
