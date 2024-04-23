@@ -29,8 +29,8 @@ function OrderMarker({ order }) {
           </Text>
         </NavLink>
         <Text fontSize="sm">
-          Время:
-          {convertTimestamp(order.WishingDate)}
+          Время:&#160;
+          {convertTimestamp(order.WishingDate, 'HH:mm')}
         </Text>
         <Box display="flex" flexDirection="row">
           <Link href={createMapLink(order.Address, mapType)} fontSize="sm" isExternal>Маршрут</Link>
