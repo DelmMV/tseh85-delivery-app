@@ -1,22 +1,22 @@
 // import { router } from './router/router';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import {
-  HashRouter, Route, Routes,
+  HashRouter, Route, Routes, useNavigate,
 } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Layout } from './components/Layout';
 import { FilterProvider } from './contexts/FilterContext';
+import { MapTypeProvider } from './contexts/MapTypeContext';
 import { SearchProvider } from './contexts/SearchContext';
 import { SelectorFilterProvider } from './contexts/SelectorFilterContext';
-import { MapComponent } from './pages/map';
-import { Main } from './pages/main';
-import { Layout } from './components/Layout';
-import { PageNotFound } from './pages/page-not-found';
 import { Login } from './pages/login';
+import { Main } from './pages/main';
+import { MapComponent } from './pages/map';
+import { PageNotFound } from './pages/page-not-found';
 import ProtectedRoute from './router/ProtectedRoute';
-import { MapTypeProvider } from './contexts/MapTypeContext';
+import { Order } from './pages/order';
 
 const queryClient = new QueryClient();
-
 function App() {
   return (
     <SearchProvider>
@@ -33,7 +33,7 @@ function App() {
                         <ProtectedRoute>
                           <Main />
                         </ProtectedRoute>
-                  )}
+          )}
                     />
                     <Route
                       path="map"
@@ -41,11 +41,12 @@ function App() {
                         <ProtectedRoute>
                           <MapComponent />
                         </ProtectedRoute>
-                  )}
+          )}
                     />
                   </Route>
                   <Route path="*" element={<PageNotFound />} />
                   <Route path="login" element={<Login />} />
+                  <Route path="/order/:OrderId" element={<Order />} />
                 </Routes>
               </HashRouter>
             </MapTypeProvider>

@@ -1,10 +1,10 @@
-import { createBrowserRouter } from 'react-router-dom';
 import React from 'react';
+import { createBrowserRouter } from 'react-router-dom';
 import { Layout } from '../components/Layout';
+import { Login } from '../pages/login';
 import { Main } from '../pages/main';
 import { MapComponent } from '../pages/map';
 import { PageNotFound } from '../pages/page-not-found';
-import { Login } from '../pages/login';
 
 export const router = createBrowserRouter([
   {

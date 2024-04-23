@@ -1,17 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { extendTheme, ChakraProvider } from '@chakra-ui/react';
-import App from './App';
-import { AuthProvider } from './router/AuthProvider';
-import './index.css';
-import 'leaflet/dist/leaflet.css';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import '@fontsource/open-sans';
 import '@fontsource/raleway';
+import 'leaflet/dist/leaflet.css';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import { AuthProvider } from './router/AuthProvider';
 
 const fonts = {
   fonts: {
-    heading: '\'Open Sans\', sans-serif',
-    body: '\'Open Sans\', sans-serif',
+    heading: "'Open Sans', sans-serif",
+    body: "'Open Sans', sans-serif",
   },
 };
 

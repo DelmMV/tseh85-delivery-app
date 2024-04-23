@@ -13,10 +13,14 @@ export const useFilter = () => {
 };
 
 export function FilterProvider({ children }) {
-  const [filter, setFilter] = useState('active'); // 'active' или 'completed'
+  const [filter, setFilter] = useState(() => {
+    const savedFilter = localStorage.getItem('filter');
+    return savedFilter || 'active';
+  });
 
   const handleFilterChange = (newFilter) => {
     setFilter(newFilter);
+    localStorage.setItem('filter', newFilter); // Сохраняем новое состояние фильтра в localStorage
   };
 
   const value = useMemo(() => ({

@@ -5,21 +5,22 @@ import {
   DrawerCloseButton,
   DrawerContent, DrawerFooter,
   DrawerOverlay,
-  useDisclosure, Text, Divider, useToast,
+  useDisclosure, Text, Divider,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
+import { useRef } from 'react';
 import { useAuth } from '../router/AuthProvider';
 import { useSettingsQuery } from '../hooks/useSettingsQuery';
 import { ThemeToggle } from './ThemeToggle';
 import { useOrdersQuery } from '../hooks/useOrdersQuery';
 import { useMapType } from '../contexts/MapTypeContext';
+import { useCopyToClipboard } from '../hooks/useСopyToClipboard';
 
 function DrawerPanel() {
   const tokenCopy = localStorage.getItem('token');
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = React.useRef();
+  const btnRef = useRef();
   const { logout } = useAuth();
   const navigate = useNavigate();
   const { data: settings, isLoading, isError } = useSettingsQuery();
@@ -36,40 +37,7 @@ function DrawerPanel() {
     }
   };
 
-  const toast = useToast();
-  function copyToClipboard(text) {
-    // Создаем временный элемент input
-    const tempInput = document.createElement('input');
-    tempInput.style.position = 'absolute';
-    tempInput.style.left = '-1000px';
-    tempInput.style.top = '-1000px';
-    tempInput.value = text;
-    document.body.appendChild(tempInput);
-    tempInput.select();
-    tempInput.setSelectionRange(0, 99999); // Для мобильных устройств
-
-    try {
-      const successful = document.execCommand('copy');
-      toast({
-        title: successful ? 'Скопировано' : 'Ошибка',
-        status: successful ? 'success' : 'error',
-        duration: 1000,
-        isClosable: true,
-        position: 'bottom-right',
-      });
-    } catch (err) {
-      toast({
-        title: 'Ошибка',
-        description: 'Не удалось скопировать номер доставки.',
-        status: 'error',
-        duration: 1000,
-        isClosable: true,
-      });
-    }
-
-    // Удаляем временный элемент
-    document.body.removeChild(tempInput);
-  }
+  const { copyText } = useCopyToClipboard();
   return (
     <>
       <Button ref={btnRef} onClick={onOpen}>
@@ -92,7 +60,9 @@ function DrawerPanel() {
             ) : (
               <Box>
                 <Box>
-                  <Text fontSize="smaller" onClick={() => copyToClipboard(tokenCopy)} position="absolute" top="40px" right="10px">token</Text>
+                  <Box onClick={() => copyText(tokenCopy)}>
+                    <Text fontSize="smaller" position="absolute" top="40px" right="10px" overflow="hidden">токен</Text>
+                  </Box>
                   <Text fontSize="lg">
                     {settings?.Name}
                   </Text>

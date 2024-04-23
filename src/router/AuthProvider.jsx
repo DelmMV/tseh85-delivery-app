@@ -1,5 +1,9 @@
 import React, {
-  useContext, createContext, useState, useEffect, useMemo,
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
 } from 'react';
 
 const AuthContext = createContext();
@@ -23,13 +27,16 @@ export function AuthProvider({ children }) {
         setUser(token);
         return { success: true }; // Explicitly return a success object
       }
-      const response = await fetch('https://app.tseh85.com/Service/api/AuthenticateDelivery', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        'https://app.tseh85.com/Service/api/AuthenticateDelivery',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ login, password }),
         },
-        body: JSON.stringify({ login, password }),
-      });
+      );
       if (!response.ok) {
         return { success: false, message: 'Ошибка логина' }; // Return on error
       }
@@ -48,11 +55,14 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
-  const value = useMemo(() => ({
-    user,
-    loginApp,
-    logout,
-  }), [user, loginApp, logout]);
+  const value = useMemo(
+    () => ({
+      user,
+      loginApp,
+      logout,
+    }),
+    [user, loginApp, logout],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

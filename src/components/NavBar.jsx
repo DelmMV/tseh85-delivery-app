@@ -1,5 +1,5 @@
 import {
-  Box, Card, Image, Tab, TabList, Tabs, useColorMode,
+  Box, Card, Tab, TabList, Tabs, useColorMode,
 } from '@chakra-ui/react';
 import React from 'react';
 import { SelectorFilter } from './SelectorFilter';
@@ -11,7 +11,8 @@ function NavBar() {
   const { colorMode } = useColorMode();
   const isLightMode = colorMode === 'light';
   const backgroundColor = isLightMode ? 'white' : '#2d3748';
-  const { handleFilterChange } = useFilter();
+  const { handleFilterChange, filter } = useFilter();
+  const tabIndex = filter === 'active' ? 0 : 1;
   return (
     <Box>
       <Card
@@ -31,7 +32,7 @@ function NavBar() {
           </Box>
         </Box>
         <Box marginTop="8px">
-          <Tabs isFitted>
+          <Tabs isFitted index={tabIndex}>
             <TabList mb="1em">
               <Tab onClick={() => handleFilterChange('active')} fontWeight="bold">Активные</Tab>
               <Tab onClick={() => handleFilterChange('completed')} fontWeight="bold">Завершенные</Tab>

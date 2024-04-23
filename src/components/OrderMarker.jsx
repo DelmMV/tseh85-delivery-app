@@ -1,22 +1,17 @@
 import { Marker, Tooltip } from 'react-leaflet';
-import { Box, Link, Text } from '@chakra-ui/react';
+import {
+  Box, Link, Text,
+} from '@chakra-ui/react';
 import L from 'leaflet';
+import { NavLink } from 'react-router-dom';
 import { status } from '../utils/status';
 import { convertTimestamp } from '../utils/convertTimestamp';
+import { createMapLink } from '../utils/createMapLink';
 import { useMapType } from '../contexts/MapTypeContext';
 
 function OrderMarker({ order }) {
   const statusInfo = status(order.Status);
   const { mapType } = useMapType();
-
-  function createMapLink(address) {
-    if (mapType === 'yandex') {
-      return `https://yandex.ru/maps/?text=${encodeURIComponent(address)}`;
-    } if (mapType === '2gis') {
-      return `https://2gis.ru/search/${encodeURIComponent(address)}`;
-    }
-    return null;
-  }
 
   const transparentIcon = L.icon({
     iconUrl: 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==', // 1x1 transparent GIF
@@ -26,23 +21,23 @@ function OrderMarker({ order }) {
 
   return (
     <Marker position={[order.Latitude, order.Longitude]} icon={transparentIcon}>
-      <Tooltip direction="right" offset={[0, 0]} opacity={1} permanent interactive>
-        <Text color={statusInfo.color} fontWeight="bold">
-          Заказ №
-          {order.DeliveryNumber}
-        </Text>
-        <Text>
+      <Tooltip direction="top" offset={[0, 0]} opacity={1} permanent interactive>
+        <NavLink to={`/order/${order.OrderId}`}>
+          <Text fontWeight="bold" color={statusInfo.color} fontSize="sm">
+            Заказ №
+            {order.DeliveryNumber}
+          </Text>
+        </NavLink>
+        <Text fontSize="sm">
           Время:
           {convertTimestamp(order.WishingDate)}
         </Text>
         <Box display="flex" flexDirection="row">
-          <Link href={createMapLink(order.Address)} isExternal>Маршрут</Link>
-          &#8195;
-          <Text>Заказ</Text>
+          <Link href={createMapLink(order.Address, mapType)} fontSize="sm" isExternal>Маршрут</Link>
         </Box>
       </Tooltip>
     </Marker>
   );
 }
 
-export default OrderMarker;
+export { OrderMarker };
