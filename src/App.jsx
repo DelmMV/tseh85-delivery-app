@@ -2,7 +2,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import {
-  HashRouter, Route, Routes, useNavigate,
+  HashRouter, Route, Routes,
 } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { FilterProvider } from './contexts/FilterContext';

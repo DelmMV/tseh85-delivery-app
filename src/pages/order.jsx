@@ -16,7 +16,6 @@ import { status } from '../utils/status';
 import { convertTimestamp } from '../utils/convertTimestamp';
 import { useMapType } from '../contexts/MapTypeContext';
 import { createMapLink } from '../utils/createMapLink';
-import {BsTelephone} from "react-icons/bs";
 
 function Order() {
   const { OrderId } = useParams();

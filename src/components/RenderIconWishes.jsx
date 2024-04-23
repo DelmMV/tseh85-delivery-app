@@ -26,7 +26,18 @@ function RenderIconWishes(wishes) {
     }
 
     return (
-      <Text key={wish.ID} fontSize="md" marginRight="2px">
+      <Text
+        key={wish.ID}
+        fontSize="md"
+        marginRight="4px"
+        sx={{
+          display: 'inline-flex', // Обеспечивает корректное отображение анимации
+          animation: 'shake 0.82s cubic-bezier(.36,.07,.19,.97) infinite both',
+          transform: 'translate3d(0, 0, 0)',
+          backfaceVisibility: 'hidden',
+          perspective: '1000px',
+        }}
+      >
         {icon}
       </Text>
     );
