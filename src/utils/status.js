@@ -1,7 +1,7 @@
 export function status(s) {
   switch (s) {
     case 12:
-      return { label: 'Новый', color: 'orange' };
+      return { label: 'Новый', color: 'yellow.300' };
     case 7:
       return { label: 'Получен', color: 'gray' };
     case 5:

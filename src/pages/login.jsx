@@ -20,38 +20,45 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
-  const { loginApp } = useAuth();
+  const { loginApp, isLoading } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
   const { error } = useOrdersQuery();
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      if (!error) {
-        await loginApp(username, password);
-        navigate('/', { replace: true });
-      }
+      await loginApp(username, password);
+      navigate('/', { replace: true });
     } catch (loginError) {
-      // Renamed 'error' to 'loginError'
-      console.error('Ошибка при попытке входа', loginError);
+      toast({
+        title: 'Ошибка входа',
+        description: loginError.message || 'Произошла ошибка при попытке входа. Пожалуйста, попробуйте снова.',
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+        position: 'bottom-right',
+      });
     }
   };
 
   const handleLoginWithToken = async (e) => {
     e.preventDefault();
     try {
-      if (!error) {
-        console.log(error);
-        await loginApp(null, null, token); // Предполагается, что loginApp может принимать токен как третий аргумент
-        navigate('/', { replace: true });
-      }
+      await loginApp(null, null, token);
+      navigate('/', { replace: true });
     } catch (loginError) {
-      console.error('Ошибка при попытке входа с токеном', loginError);
+      toast({
+        title: 'Ошибка входа с токеном',
+        description: loginError.message || 'Произошла ошибка при попытке входа с токеном. Пожалуйста, попробуйте снова.',
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+        position: 'bottom-right',
+      });
     }
   };
-
   useEffect(() => {
-    if (error) {
+    if (error?.status === 401) {
       toast({
         title: 'Ошибка',
         description: error.message,
@@ -62,7 +69,9 @@ function Login() {
       });
     }
   }, [error, toast]);
+
   const handleClick = () => setShow(!show);
+
   return (
     <Box
       display="flex"
@@ -83,6 +92,7 @@ function Login() {
           placeholder="Введите логин"
           size="md"
           value={username}
+          minLength="2"
           onChange={(e) => setUsername(e.target.value)}
         />
         <InputGroup size="md" minWidth="320px" maxWidth="400px">
@@ -91,6 +101,7 @@ function Login() {
             type={show ? 'text' : 'password'}
             placeholder="Введите пароль"
             value={password}
+            minLength="2"
             onChange={(e) => setPassword(e.target.value)}
           />
           <InputRightElement width="4.5rem">
@@ -100,12 +111,15 @@ function Login() {
           </InputRightElement>
         </InputGroup>
         <Button
+          isLoading={isLoading}
+          loadingText="Загрузка..."
           onClick={handleLogin}
-          variant="outline"
           borderWidth="3px"
           minWidth="320px"
           maxWidth="400px"
           marginBottom="10px"
+          spinnerPlacement="end"
+          isDisabled={!username || !password}
         >
           Войти
         </Button>
@@ -125,10 +139,10 @@ function Login() {
         </InputGroup>
         <Button
           onClick={handleLoginWithToken}
-          variant="outline"
           borderWidth="3px"
           minWidth="320px"
           maxWidth="400px"
+          isDisabled={!token}
         >
           Войти с токеном
         </Button>

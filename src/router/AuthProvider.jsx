@@ -5,6 +5,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import { useToast } from '@chakra-ui/react';
 
 const AuthContext = createContext();
 
@@ -12,6 +13,8 @@ export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -21,11 +24,19 @@ export function AuthProvider({ children }) {
   }, []);
 
   const loginApp = async (login, password, token = null) => {
+    setIsLoading(true); // Начало загрузки
     try {
       if (token) {
         localStorage.setItem('token', token);
         setUser(token);
-        return { success: true }; // Explicitly return a success object
+        toast({
+          title: 'Успешный вход в систему!',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+        setIsLoading(false); // Завершение загрузки
+        return { success: true };
       }
       const response = await fetch(
         'https://app.tseh85.com/Service/api/AuthenticateDelivery',
@@ -38,30 +49,56 @@ export function AuthProvider({ children }) {
         },
       );
       if (!response.ok) {
-        return { success: false, message: 'Ошибка логина' }; // Return on error
+        toast({
+          title: 'Неправильный логин или пароль',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+        setIsLoading(false); // Завершение загрузки
+        return { success: false, message: 'Неправильный логин или пароль' };
       }
       const authToken = response.headers.get('Token');
       localStorage.setItem('token', authToken);
       setUser(authToken);
-      return { success: true }; // Return on success
+      toast({
+        title: 'Успешный вход в систему!',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+      setIsLoading(false); // Завершение загрузки
+      return { success: true };
     } catch (error) {
-      console.error('Ошибка при логине:', error);
-      return { success: false, message: error.message }; // Return on exception
+      toast({
+        title: `Ошибка при логине: ${error.message}`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      setIsLoading(false); // Завершение загрузки
+      return { success: false, message: error.message };
     }
   };
-
   const logout = () => {
     localStorage.removeItem('token');
     setUser(null);
+    toast({
+      title: 'Вы вышли из системы',
+      status: 'info',
+      duration: 5000,
+      isClosable: true,
+    });
   };
 
   const value = useMemo(
     () => ({
       user,
+      isLoading,
       loginApp,
       logout,
     }),
-    [user, loginApp, logout],
+    [user, isLoading, loginApp, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

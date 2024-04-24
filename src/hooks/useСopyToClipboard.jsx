@@ -30,7 +30,7 @@ const useCopyToClipboard = () => {
         isClosable: true,
       });
     }
-    console.log(tempInput.select());
+    console.log(tempInput.value);
     document.body.removeChild(tempInput);
   };
   return { copyText };
