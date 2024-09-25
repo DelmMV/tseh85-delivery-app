@@ -16,7 +16,6 @@ export function useOrdersQuery() {
 
   const fetchOrders = async () => {
     const abortController = new AbortController();
-    const acesToken = localStorage.getItem('token');
     const response = await fetch('https://app.tseh85.com/Service/api/delivery/orders?LastUpdateTicks=0', {
       headers: {
         'Content-Type': 'application/json',

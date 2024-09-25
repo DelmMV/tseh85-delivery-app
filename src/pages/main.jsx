@@ -8,6 +8,7 @@ import { useSearch } from '../contexts/SearchContext';
 import { useSelectorFilter } from '../contexts/SelectorFilterContext';
 import { useOrdersQuery } from '../hooks/useOrdersQuery';
 
+
 function Main() {
   const toast = useToast();
   const { data: orders, isLoading, error } = useOrdersQuery();
@@ -28,7 +29,7 @@ function Main() {
     }
   }, [error, toast]);
 
-  const filterOrders = useCallback((orders) => orders.filter((order) => {
+  const filterOrders = useCallback((orderList) => orderList.filter((order) => {
     const isActive = filter === 'active' ? order.Status !== 7 : order.Status === 7;
     if (!isActive) return false;
     let statusMatch = true;
@@ -59,8 +60,8 @@ function Main() {
       paddingBottom="55px"
     >
       {!isLoading ? (
-        filteredOrders.map((order, index) => (
-          <MemoizedOrderCard order={order} key={`${order.OrderID}-${index}`} />
+        filteredOrders.map((order) => (
+          <MemoizedOrderCard order={order} key={order.OrderID} />
         ))
       ) : (
         <Box

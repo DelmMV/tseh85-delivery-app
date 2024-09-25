@@ -1,4 +1,4 @@
-import { AspectRatio } from '@chakra-ui/react';
+import { AspectRatio, Box, Spinner } from '@chakra-ui/react';
 import React, { useMemo } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import 'react-leaflet-markercluster/dist/styles.min.css';
@@ -9,7 +9,7 @@ import { useSelectorFilter } from '../contexts/SelectorFilterContext';
 import { useOrdersQuery } from '../hooks/useOrdersQuery';
 
 function MapComponent() {
-  const { data: orders } = useOrdersQuery();
+  const { data: orders, isLoading } = useOrdersQuery();
   const { filter } = useFilter();
   const { searchQuery } = useSearch();
   const { selectorFilter } = useSelectorFilter();
@@ -50,9 +50,17 @@ function MapComponent() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-        {filteredOrders.map((order) => (
+        {!isLoading ? filteredOrders.map((order) => (
           <OrderMarker key={order.OrderId} order={order} />
-        ))}
+        )) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Spinner size="xl" />
+          </Box>
+        )}
       </MapContainer>
     </AspectRatio>
   );

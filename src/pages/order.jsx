@@ -1,5 +1,5 @@
 import {
-  Box, Button, Divider, Link, Stack, Table, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Tr,
+  Box, Button, Card, Divider, Link, Stack, Table, TableContainer, Tbody, Td, Text, Tr,
 } from '@chakra-ui/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import React, {
@@ -20,7 +20,7 @@ import { createMapLink } from '../utils/createMapLink';
 function Order() {
   const { OrderId } = useParams();
   const { data: getOrder, isLoading, isError } = useOrderQuery(OrderId);
-  const { data: orders, isLoadingOrders, isErrorOrders } = useOrdersQuery();
+  const { data: orders } = useOrdersQuery();
   const [selectedItems, setSelectedItems] = useState({});
   const handleCheckboxChange = useCallback((itemId) => {
     setSelectedItems((prevSelectedItems) => ({
@@ -42,13 +42,24 @@ function Order() {
   const filterOrders = () => {
     const orderIdNum = parseInt(OrderId, 10);
     if (orders) {
-      const filteredOrder = orders?.filter((order) => order.OrderId === orderIdNum);
-      return filteredOrder;
+      return orders?.filter((order) => order.OrderId === orderIdNum);
     }
     return null;
   };
   const filtered = useMemo(() => filterOrders(), [orders]);
   const [filteredOrder] = filtered || [{}];
+
+  if (!filteredOrder) {
+    return (
+      <>
+        <Text>Order not found</Text>
+        <Button onClick={goBack}>
+          <ArrowBackIcon />
+        </Button>
+      </>
+    );
+  }
+
   const {
     Price,
     PaymentType,
@@ -97,73 +108,70 @@ function Order() {
     );
   };
   return (
-    <Stack spacing={2} margin="10px" divider={<Divider />}>
-      <Box>
-        {renderMap()}
-      </Box>
-      <Box display="flex" flexDir="row" justifyContent="space-between" alignItems="center">
-        <Button onClick={goBack}>
-          <ArrowBackIcon />
-        </Button>
-        <Text fontWeight="bold" color={status(Status).color}>
-          №
-          {DeliveryNumber}
-        </Text>
-        <DrawerPanel />
-      </Box>
-      {Wishes && RenderTextWishes(Wishes)}
-      {ClientComment && (
-      <Box display="flex" flexDirection="row" alignItems="flex-start">
-        <Text fontSize="sm">Комментарий:&#160;</Text>
-        <Text fontWeight="bold">{ClientComment}</Text>
-      </Box>
-      )}
-      <Box>
-        {renderContent()}
-        <Box display="flex" flexDir="row" alignItems="center" justifyContent="space-between">
-          <Box>
-            {isAllSelected && <Button width="60px" height="20px" fontSize="sm" fontWeight="extrabold" variant="outline" colorScheme="green">Готово</Button>}
+    <Card>
+      <Stack spacing={2} margin="10px" divider={<Divider />}>
+        <Box>
+          {renderMap()}
+        </Box>
+        <Box display="flex" flexDir="row" justifyContent="space-between" alignItems="center">
+          <Button onClick={goBack}>
+            <ArrowBackIcon />
+          </Button>
+          <Text fontWeight="bold" color={status(Status).color}>
+            №
+            {DeliveryNumber}
+          </Text>
+          <DrawerPanel />
+        </Box>
+        {Wishes && RenderTextWishes(Wishes)}
+        {ClientComment && (
+          <Box display="flex" flexDirection="row" alignItems="flex-start">
+            <Text fontSize="sm">Комментарий:&#160;</Text>
+            <Text fontWeight="bold">{ClientComment}</Text>
           </Box>
-          <Box display="flex" flexDir="row">
-            <Text>Всего&#160;</Text>
-            <Text fontWeight="bold">{QuantityPurchases}</Text>
-            <Text>&#160;позиций, на сумму&#160;</Text>
-            <Text fontWeight="bold">
-              {Price}
-              Р.
-            </Text>
+        )}
+        <Box>
+          {renderContent()}
+          <Box display="flex" flexDir="row" alignItems="center" justifyContent="space-between">
+            <Box>
+              {isAllSelected && <Button width="60px" height="20px" fontSize="sm" fontWeight="extrabold" variant="outline" colorScheme="green">Готово</Button>}
+            </Box>
+            <Box display="flex" flexDir="row">
+              <Text>Всего&#160;</Text>
+              <Text fontWeight="bold">{QuantityPurchases}</Text>
+              <Text>&#160;позиций, на сумму&#160;</Text>
+              <Text fontWeight="bold">
+                {Price}
+                Р.
+              </Text>
+            </Box>
           </Box>
         </Box>
-      </Box>
-      <TableContainer borderWidth="1px" borderRadius="5px">
-        <Table size="sm" variant="striped">
-          <Tbody>
-            <Tr>
-              <Td>
-                Адрес:
-              </Td>
-              <Td whiteSpace="pre-wrap" fontWeight="bold"><Link href={createMapLink(Address, mapType)} fontSize="sm" isExternal>{Address}</Link></Td>
-            </Tr>
-            <Tr>
-              <Td>Ближайшее время:</Td>
-              <Td fontWeight="bold">{Nearest ? 'Да' : 'Нет'}</Td>
-            </Tr>
-            {ClientName && (
-            <Tr>
-              <Td>Клиент:</Td>
-              <Td whiteSpace="pre-wrap" fontWeight="bold">{ClientName}</Td>
-            </Tr>
-            )}
-            <Tr>
-              <Td>Телефон:</Td>
-              <Td fontWeight="bold">
-                <a href={`tel:${ClientPhone}`}>
-                  +
-                  {ClientPhone}
-                </a>
-              </Td>
-            </Tr>
-            {
+        <TableContainer borderWidth="1px" borderRadius="5px" boxShadow="lg">
+          <Table size="sm" variant="striped" colorScheme="teal">
+            <Tbody>
+              <Tr>
+                <Td>
+                  Адрес:
+                </Td>
+                <Td whiteSpace="pre-wrap" fontWeight="bold"><Link href={createMapLink(Address, mapType)} fontSize="sm" isExternal>{Address}</Link></Td>
+              </Tr>
+              {ClientName && (
+                <Tr>
+                  <Td>Клиент:</Td>
+                  <Td whiteSpace="pre-wrap" fontWeight="bold">{ClientName}</Td>
+                </Tr>
+              )}
+              <Tr>
+                <Td>Телефон:</Td>
+                <Td fontWeight="bold">
+                  <a href={`tel:${ClientPhone}`}>
+                    +
+                    {ClientPhone}
+                  </a>
+                </Td>
+              </Tr>
+              {
               PaymentType && (
               <Tr>
                 <Td>Оплата:</Td>
@@ -171,57 +179,62 @@ function Order() {
               </Tr>
               )
             }
-            <Tr>
-              <Td>Общая сумма:</Td>
-              <Td fontWeight="bold">
-                {Price}
-                Р.
-              </Td>
-            </Tr>
-            {DispecherComment && (
-            <Tr>
-              <Td>Комментарий диспечера:</Td>
-              <Td whiteSpace="pre-wrap" fontWeight="bold">{DispecherComment}</Td>
-            </Tr>
-            )}
-            {CheckoutUserName && (
-            <Tr>
-              <Td>Выдан:</Td>
-              <Td whiteSpace="pre-wrap" fontWeight="bold">{CheckoutUserName}</Td>
-            </Tr>
-            )}
-            <Tr>
-              <Td>Время заказа:</Td>
-              <Td fontWeight="bold">{convertTimestamp(DateOrder)}</Td>
-            </Tr>
-            <Tr>
-              <Td>Желаемое время получения:</Td>
-              <Td fontWeight="bold">
-                {convertTimestamp(WishingDate)}
-              </Td>
-            </Tr>
-            {DateComplete && (
-            <Tr>
-              <Td>Время подтверждения:</Td>
-              <Td fontWeight="bold">{convertTimestamp(DateComplete)}</Td>
-            </Tr>
-            )}
-            {DateReceipt && (
-            <Tr>
-              <Td>Время получения:</Td>
-              <Td fontWeight="bold">{convertTimestamp(DateReceipt)}</Td>
-            </Tr>
-            )}
-            {DateUpdate && (
-            <Tr>
-              <Td>Время обновления:</Td>
-              <Td fontWeight="bold">{convertTimestamp(DateUpdate)}</Td>
-            </Tr>
-            )}
-          </Tbody>
-        </Table>
-      </TableContainer>
-    </Stack>
+              <Tr>
+                <Td>Общая сумма:</Td>
+                <Td fontWeight="bold">
+                  {Price}
+                  Р.
+                </Td>
+              </Tr>
+              {DispecherComment && (
+                <Tr>
+                  <Td>Комментарий диспечера:</Td>
+                  <Td whiteSpace="pre-wrap" fontWeight="bold">{DispecherComment}</Td>
+                </Tr>
+              )}
+              {CheckoutUserName && (
+                <Tr>
+                  <Td>Выдан:</Td>
+                  <Td whiteSpace="pre-wrap" fontWeight="bold">{CheckoutUserName}</Td>
+                </Tr>
+              )}
+              <Tr>
+                <Td>Ближайшее время:</Td>
+                <Td fontWeight="bold">{Nearest ? 'Да' : 'Нет'}</Td>
+              </Tr>
+              <Tr>
+                <Td>Время заказа:</Td>
+                <Td fontWeight="bold">{convertTimestamp(DateOrder)}</Td>
+              </Tr>
+              <Tr>
+                <Td>Желаемое время получения:</Td>
+                <Td fontWeight="bold">
+                  {convertTimestamp(WishingDate)}
+                </Td>
+              </Tr>
+              {DateComplete && (
+                <Tr>
+                  <Td>Время подтверждения:</Td>
+                  <Td fontWeight="bold">{convertTimestamp(DateComplete)}</Td>
+                </Tr>
+              )}
+              {DateReceipt && (
+                <Tr>
+                  <Td>Время получения:</Td>
+                  <Td fontWeight="bold">{convertTimestamp(DateReceipt)}</Td>
+                </Tr>
+              )}
+              {DateUpdate && (
+                <Tr>
+                  <Td>Время обновления:</Td>
+                  <Td fontWeight="bold">{convertTimestamp(DateUpdate)}</Td>
+                </Tr>
+              )}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </Stack>
+    </Card>
   );
 }
 export { Order };

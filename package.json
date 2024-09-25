@@ -27,6 +27,7 @@
     "clipboard.js": "^1.0.1",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.0.28",
+    "gh-pages": "^6.1.1",
     "leaflet": "^1.9.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

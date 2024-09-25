@@ -172,7 +172,7 @@ function OrderCard({ order }) {
                         <Box>{Wishes && RenderTextWishes(Wishes)}</Box>
                       </Stack>
                       <Box marginBottom="5px">
-                        <OpenOrder DeliveryNumber={DeliveryNumber} Price={Price} QuantityPurchases={QuantityPurchases} OrderId={OrderId} />
+                        <OpenOrder DeliveryNumber={DeliveryNumber} Price={Price} QuantityPurchases={QuantityPurchases} OrderId={OrderId} Status={Status} />
                       </Box>
                     </AccordionPanel>
                   </Box>
