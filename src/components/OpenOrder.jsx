@@ -6,6 +6,7 @@ import { NavLink } from 'react-router-dom';
 import { useOrderQuery } from '../hooks/useOrderQuery';
 import OrderContent from './OrderContent';
 import { useSubmitOrder } from '../hooks/useSubmitOrder';
+import ConfirmationModal from './ConfirmationModal';
 
 function OpenOrder({
   QuantityPurchases,
@@ -14,6 +15,9 @@ function OpenOrder({
   Status,
 }) {
   const { isOpen, onClose, onToggle } = useDisclosure();
+  const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
+  const [currentAction, setCurrentAction] = useState(null);
+
   const { data: getOrder, isLoading, isError } = useOrderQuery(OrderId, { enabled: isOpen });
   const [selectedItems, setSelectedItems] = useState({});
   const handleCheckboxChange = useCallback((itemId) => {
@@ -33,31 +37,36 @@ function OpenOrder({
 
   const { mutate: submitOrder, isLoading: isSubmitting } = useSubmitOrder();
 
-  const handlePostOrder = async () => {
-    try {
-      await submitOrder({
-        Status: 5, // Статус "Подтвержден"
-        OrderID: OrderId,
-        CancelReasonID: 1,
-        Comment: '',
-        WishingDate: null,
-      });
-      // Обновление UI будет происходить автоматически после инвалидации кэша
-    } catch (error) {
-      console.error('Error updating order status:', error);
-    }
+  const handlePostOrder = () => {
+    setCurrentAction('confirm');
+    onModalOpen();
   };
 
-  const handlePostOrderCheckout = async () => {
+  const handlePostOrderCheckout = () => {
+    setCurrentAction('checkout');
+    onModalOpen();
+  };
+
+  const handleConfirm = async () => {
     try {
-      await submitOrder({
-        Status: 7, // Статус "Получен"
-        OrderID: OrderId,
-        CancelReasonID: 1,
-        Comment: '',
-        WishingDate: null,
-      });
-      // Обновление UI будет происходить автоматически после инвалидации кэша
+      if (currentAction === 'confirm') {
+        await submitOrder({
+          Status: 5,
+          OrderID: OrderId,
+          CancelReasonID: 1,
+          Comment: '',
+          WishingDate: null,
+        });
+      } else if (currentAction === 'checkout') {
+        await submitOrder({
+          Status: 7,
+          OrderID: OrderId,
+          CancelReasonID: 1,
+          Comment: '',
+          WishingDate: null,
+        });
+      }
+      onModalClose();
     } catch (error) {
       console.error('Error updating order status:', error);
     }
@@ -80,8 +89,15 @@ function OpenOrder({
     }
     if (Status === 7) {
       return (
-        <Button height="35px" variant="outline">
-          [Пусто]
+        <Button height="35px" variant="outline" isDisabled>
+          Заказ получен
+        </Button>
+      );
+    }
+    if (Status === 12) {
+      return (
+        <Button height="35px" variant="outline" isDisabled>
+          Новый заказ
         </Button>
       );
     }
@@ -119,6 +135,13 @@ function OpenOrder({
           </Box>
         </Box>
       </Collapse>
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={onModalClose}
+        onConfirm={handleConfirm}
+        title={currentAction === 'confirm' ? 'Подтвердить заказ' : 'Заказ получен'}
+        message={currentAction === 'confirm' ? 'Вы уверены, что хотите подтвердить этот заказ?' : 'Вы уверены, что заказ получен?'}
+      />
     </>
   );
 }

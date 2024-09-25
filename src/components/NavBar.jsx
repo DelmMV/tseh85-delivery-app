@@ -1,7 +1,8 @@
+import React from 'react';
 import {
   Box, Card, Tab, TabList, Tabs, useColorMode,
 } from '@chakra-ui/react';
-import React from 'react';
+import { useSwipeable } from 'react-swipeable';
 import { SelectorFilter } from './SelectorFilter';
 import { DrawerPanel } from './DrawerPanel';
 import { InputFilter } from './InputFilter';
@@ -13,8 +14,16 @@ function NavBar() {
   const backgroundColor = isLightMode ? 'white' : '#2d3748';
   const { handleFilterChange, filter } = useFilter();
   const tabIndex = filter === 'active' ? 0 : 1;
+
+  const handlers = useSwipeable({
+    onSwipedLeft: () => handleFilterChange('completed'),
+    onSwipedRight: () => handleFilterChange('active'),
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true,
+  });
+
   return (
-    <Box>
+    <Box {...handlers}>
       <Card
         borderRadius="none"
         borderTop="none"
@@ -32,10 +41,10 @@ function NavBar() {
           </Box>
         </Box>
         <Box marginTop="8px">
-          <Tabs isFitted index={tabIndex}>
+          <Tabs isFitted index={tabIndex} onChange={(index) => handleFilterChange(index === 0 ? 'active' : 'completed')}>
             <TabList mb="1em">
-              <Tab onClick={() => handleFilterChange('active')} fontWeight="bold">Активные</Tab>
-              <Tab onClick={() => handleFilterChange('completed')} fontWeight="bold">Завершенные</Tab>
+              <Tab fontWeight="bold">Активные</Tab>
+              <Tab fontWeight="bold">Завершенные</Tab>
             </TabList>
           </Tabs>
         </Box>
@@ -43,4 +52,5 @@ function NavBar() {
     </Box>
   );
 }
+
 export { NavBar };

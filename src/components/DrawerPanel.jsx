@@ -53,64 +53,69 @@ function DrawerPanel() {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerBody>
-            {isLoading ? (
-              <p>Загрузка настроек...</p>
-            ) : isError ? (
-              <p>Ошибка при загрузке настроек.</p>
-            ) : (
-              <Box>
+            {(() => {
+              if (isLoading) {
+                return <p>Загрузка настроек...</p>;
+              }
+              if (isError) {
+                return <p>Ошибка загрузки настроек</p>;
+              }
+              // Здесь возвращаем содержимое для случая, когда нет загрузки и ошибки
+              return (
                 <Box>
-                  <Box onClick={() => copyText(tokenCopy)}>
-                    <Text fontSize="smaller" position="absolute" top="40px" right="10px" overflow="hidden">токен</Text>
-                  </Box>
-                  <Text fontSize="lg">
-                    {settings?.Name}
-                  </Text>
-                  <Text fontSize="sm" color="grey">
-                    {settings?.ShopName}
-                  </Text>
-                </Box>
-                <Divider margin="10px 0 10px 0" />
-                <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
-                  <Text fontSize="sm">
-                    Интенсив в минутах:&#160;
-                  </Text>
-                  <Text fontSize="md" fontWeight="bold">
-                    {settings?.AddDeliveryTime}
-                  </Text>
-                </Box>
-                <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
-                  <Text fontSize="sm">
-                    Всего заказов:&#160;
-                  </Text>
-                  <Text fontSize="md" fontWeight="bold">
-                    {orders?.length ?? 0}
-                  </Text>
-                </Box>
-                <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
-                  <Text fontSize="sm">
-                    Доставил(a) заказов:&#160;
-                  </Text>
-                  <Text fontSize="md" fontWeight="bold">
-                    {filterDelivery?.length ?? 0}
-                  </Text>
-                </Box>
-                <Divider margin="10px 0 10px 0" />
-                <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
-                  <Text fontSize="sm">
-                    Переключения световой темы:
-                  </Text>
-                  <ThemeToggle />
-                </Box>
-                <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" marginTop="10px">
-                  <Text fontSize="sm">Карта:</Text>
                   <Box>
-                    <Button onClick={() => changeMapType('yandex')} colorScheme={mapType === 'yandex' ? 'blue' : 'gray'}>Yandex</Button>
-                    <Button onClick={() => changeMapType('2gis')} colorScheme={mapType === '2gis' ? 'blue' : 'gray'}>2GIS</Button>
+                    <Box onClick={() => copyText(tokenCopy)}>
+                      <Text fontSize="smaller" position="absolute" top="40px" right="10px" overflow="hidden">токен</Text>
+                    </Box>
+                    <Text fontSize="lg">
+                      {settings?.Name}
+                    </Text>
+                    <Text fontSize="sm" color="grey">
+                      {settings?.ShopName}
+                    </Text>
+                  </Box>
+                  <Divider margin="10px 0 10px 0" />
+                  <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
+                    <Text fontSize="sm">
+                      Интенсив в минутах:&#160;
+                    </Text>
+                    <Text fontSize="md" fontWeight="bold">
+                      {settings?.AddDeliveryTime}
+                    </Text>
+                  </Box>
+                  <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
+                    <Text fontSize="sm">
+                      Всего заказов:&#160;
+                    </Text>
+                    <Text fontSize="md" fontWeight="bold">
+                      {orders?.length ?? 0}
+                    </Text>
+                  </Box>
+                  <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
+                    <Text fontSize="sm">
+                      Доставил(a) заказов:&#160;
+                    </Text>
+                    <Text fontSize="md" fontWeight="bold">
+                      {filterDelivery?.length ?? 0}
+                    </Text>
+                  </Box>
+                  <Divider margin="10px 0 10px 0" />
+                  <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
+                    <Text fontSize="sm">
+                      Переключения световой темы:
+                    </Text>
+                    <ThemeToggle />
+                  </Box>
+                  <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" marginTop="10px">
+                    <Text fontSize="sm">Карта:</Text>
+                    <Box>
+                      <Button onClick={() => changeMapType('yandex')} colorScheme={mapType === 'yandex' ? 'blue' : 'gray'}>Yandex</Button>
+                      <Button onClick={() => changeMapType('2gis')} colorScheme={mapType === '2gis' ? 'blue' : 'gray'}>2GIS</Button>
+                    </Box>
                   </Box>
                 </Box>
-              </Box>
-            )}
+              );
+            })()}
           </DrawerBody>
 
           <DrawerFooter display="flex" justifyContent="space-between">
