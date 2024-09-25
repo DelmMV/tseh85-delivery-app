@@ -128,7 +128,7 @@ function OrderCard({ order }) {
                     </Box>
                     {!isExpanded && (
                     <Box display="flex" flexDirection="column" justifyContent="space-between" alignItems="stretch">
-                      <OpenOrder DeliveryNumber={DeliveryNumber} Price={Price} QuantityPurchases={QuantityPurchases} OrderId={OrderId} />
+                      <OpenOrder DeliveryNumber={DeliveryNumber} Price={Price} QuantityPurchases={QuantityPurchases} OrderId={OrderId} Status={Status} />
                     </Box>
                     )}
                   </Stack>

@@ -29,13 +29,14 @@ export const useSubmitOrder = () => {
     return response.json();
   };
 
-  return useMutation(submitOrder, {
-    // onSuccess: () => {
-    //   // Здесь вы можете выполнить действия после успешной отправки, например, инвалидировать кэш запроса
-    //   //queryClient.invalidateQueries('someQueryKey');
-    // },
+  return useMutation({
+    mutationFn: submitOrder,
+    onSuccess: () => {
+      // Инвалидируем кэш запроса orders после успешного обновления
+      queryClient.invalidateQueries({ queryKey: ['orders'] });
+    },
     onError: (error) => {
-      // Обработка ошибок
+      // eslint-disable-next-line no-console
       console.error('Error submitting order:', error);
     },
   });
