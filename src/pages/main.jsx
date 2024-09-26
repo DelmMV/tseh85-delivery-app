@@ -66,8 +66,8 @@ function Main() {
       paddingBottom="55px"
     >
       {!isLoading ? (
-        filteredOrders.map((order) => (
-          <MemoizedOrderCard order={order} key={order.OrderID} />
+        filteredOrders.map((order, index) => (
+          <MemoizedOrderCard order={order} key={`${order.OrderID}-${index}`} />
         ))
       ) : (
         <Box

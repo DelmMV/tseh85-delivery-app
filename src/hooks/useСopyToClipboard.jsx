@@ -2,37 +2,43 @@ import { useToast } from '@chakra-ui/react';
 
 const useCopyToClipboard = () => {
   const toast = useToast();
-  const copyText = (text) => {
-    const tempInput = document.createElement('input');
-    tempInput.style.position = 'absolute';
-    tempInput.style.left = '-1000px';
-    tempInput.style.top = '-1000px';
-    tempInput.value = text;
-    document.body.appendChild(tempInput);
-    tempInput.select();
-    tempInput.setSelectionRange(0, 99999); // Для мобильных устройств
+
+  const copyText = async (text) => {
+    if (!navigator.clipboard) {
+      toast({
+        title: 'Ошибка',
+        description: 'Копирование в буфер обмена не поддерживается вашим браузером.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'bottom-right',
+      });
+      return;
+    }
 
     try {
-      const successful = document.execCommand('copy');
+      await navigator.clipboard.writeText(text);
       toast({
-        title: successful ? `Скопировано ${text}` : 'Ошибка',
-        status: successful ? 'success' : 'error',
-        duration: 1000,
+        title: 'Успешно скопировано',
+        description: `Текст "${text}" скопирован в буфер обмена.`,
+        status: 'success',
+        duration: 2000,
         isClosable: true,
         position: 'bottom-right',
       });
     } catch (err) {
+      console.error('Ошибка при копировании текста:', err);
       toast({
         title: 'Ошибка',
-        description: 'Не удалось скопировать текст.',
-        status: err,
-        duration: 1000,
+        description: 'Не удалось скопировать текст в буфер обмена.',
+        status: 'error',
+        duration: 3000,
         isClosable: true,
+        position: 'bottom-right',
       });
     }
-    console.log(tempInput.value);
-    document.body.removeChild(tempInput);
   };
+
   return { copyText };
 };
 
