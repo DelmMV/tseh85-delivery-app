@@ -94,28 +94,28 @@ function OpenOrder({
     if (Status === 5) {
       return (
         <Button height="35px" variant="outline" onClick={handlePostOrder} isLoading={isSubmitting}>
-          Провести заказ
+          Доставить
         </Button>
       );
     }
     if (Status === 6) {
       return (
         <Button height="35px" variant="outline" onClick={handlePostOrderCheckout} isLoading={isSubmitting}>
-          Заказ получен
+          Доставлен
         </Button>
       );
     }
     if (Status === 7) {
       return (
         <Button height="35px" variant="outline" isDisabled>
-          Заказ получен
+          Доставлен
         </Button>
       );
     }
     if (Status === 12) {
       return (
         <Button height="35px" variant="outline" isDisabled>
-          Новый заказ
+          Доставить
         </Button>
       );
     }
@@ -124,9 +124,9 @@ function OpenOrder({
 
   return (
     <>
-      <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" padding="0 0 0 0">
+      <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" padding="0 0 0 0" marginBottom="5px">
         <Button onClick={() => setIsContentVisible(!isContentVisible)} height="35px" variant="outline">
-          {isContentVisible ? 'Скрыть состав' : 'Показать состав'}
+          {isContentVisible ? '▲Состав' : '▼Состав'}
         </Button>
         <Button height="35px" variant="outline">
           <NavLink to={`order/${OrderId}`}>Подробнее</NavLink>

@@ -11,11 +11,11 @@ const createAuthorizationError = (message, status) => {
 export function useOrdersQuery() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const abortController = new AbortController();
 
   const acesToken = localStorage.getItem('token');
 
   const fetchOrders = async () => {
-    const abortController = new AbortController();
     const response = await fetch('https://app.tseh85.com/Service/api/delivery/orders?LastUpdateTicks=0', {
       headers: {
         'Content-Type': 'application/json',

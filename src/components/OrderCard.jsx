@@ -21,6 +21,7 @@ import { RenderIconWishes } from './RenderIconWishes';
 import { RenderTextWishes } from './RenderTextWishes';
 import { RenderIconComments } from './RenderIconComments';
 import { createMapLink } from '../utils/createMapLink';
+import { Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
 
 function OrderCard({ order }) {
   const {
@@ -37,13 +38,14 @@ function OrderCard({ order }) {
     Status,
     CheckoutUserName,
     Nearest,
+    Latitude,
+    Longitude,
   } = order;
   const [isExpanded, setIsExpanded] = useState(() => {
     const saved = localStorage.getItem(`isExpanded_${DeliveryNumber}`);
     return saved !== null ? JSON.parse(saved) : false;
   });
   const { mapType } = useMapType();
-
   const statusInfo = status(Status);
   const { copyText } = useCopyToClipboard();
 
@@ -101,11 +103,19 @@ function OrderCard({ order }) {
           </Box>
           <Divider />
           <Box display="flex" flexDirection="row" alignItems="center">
-            <Text fontSize="md" fontWeight="bold">
-              <Link href={createMapLink(Address, mapType)} isExternal>
+            <Menu>
+              <MenuButton as={Button} variant="link" fontWeight="bold" fontSize="md">
                 {isExpanded ? Address : shortenedAddress}
-              </Link>
-            </Text>
+              </MenuButton>
+              <MenuList>
+                <MenuItem onClick={() => window.open(createMapLink(Address, mapType), '_blank')}>
+                  По адресу
+                </MenuItem>
+                <MenuItem onClick={() => window.open(createMapLink(`${Latitude},${Longitude}`, mapType), '_blank')}>
+                  По координатам
+                </MenuItem>
+              </MenuList>
+            </Menu>
           </Box>
           <Box display="flex" flexDirection="row" justifyContent="space-between">
             <Box display="flex" flexDirection="row" alignItems="center">
