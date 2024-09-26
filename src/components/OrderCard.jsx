@@ -102,10 +102,12 @@ function OrderCard({ order }) {
             </Box>
           </Box>
           <Divider />
-          <Box display="flex" flexDirection="row" alignItems="center">
+          <Box display="flex" flexDirection="column" alignItems="flex-start" maxWidth="100%" overflow="hidden">
             <Menu>
-              <MenuButton as={Button} variant="link" fontWeight="bold" fontSize="md">
-                {isExpanded ? Address : shortenedAddress}
+              <MenuButton as={Button} variant="link" fontWeight="bold" fontSize="md" textAlign="left" whiteSpace="normal" height="auto" maxWidth="100%">
+                <Text>
+                  {isExpanded ? Address : shortenedAddress}
+                </Text>
               </MenuButton>
               <MenuList>
                 <MenuItem onClick={() => window.open(createMapLink(Address, mapType), '_blank')}>
