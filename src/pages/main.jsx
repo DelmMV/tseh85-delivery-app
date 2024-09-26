@@ -7,6 +7,7 @@ import { useFilter } from '../contexts/FilterContext';
 import { useSearch } from '../contexts/SearchContext';
 import { useSelectorFilter } from '../contexts/SelectorFilterContext';
 import { useOrdersQuery } from '../hooks/useOrdersQuery';
+import { cleanLocalStorage } from '../utils/cleanLocalStorage';
 
 function Main() {
   const toast = useToast();
@@ -27,6 +28,12 @@ function Main() {
       });
     }
   }, [error, toast]);
+
+  useEffect(() => {
+    if (orders) {
+      cleanLocalStorage(orders);
+    }
+  }, [orders]);
 
   const filterOrders = useCallback((orderList) => orderList.filter((order) => {
     const isActive = filter === 'active' ? order.Status !== 7 : order.Status === 7;

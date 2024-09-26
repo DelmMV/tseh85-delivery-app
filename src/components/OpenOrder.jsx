@@ -1,4 +1,6 @@
-import React, { useCallback, useState, memo, useEffect } from 'react';
+import React, {
+  useCallback, useState, memo, useEffect,
+} from 'react';
 import {
   Box, Button, Text, useDisclosure,
 } from '@chakra-ui/react';
@@ -83,6 +85,7 @@ function OpenOrder({
       }
       onModalClose();
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error updating order status:', error);
     }
   };

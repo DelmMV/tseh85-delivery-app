@@ -9,7 +9,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { BsTelephone } from 'react-icons/bs';
 import { LuClipboardCopy } from 'react-icons/lu';
 import { useMapType } from '../contexts/MapTypeContext';
@@ -23,6 +23,7 @@ import { RenderIconComments } from './RenderIconComments';
 import { createMapLink } from '../utils/createMapLink';
 
 function OrderCard({ order }) {
+  const [isExpanded, setIsExpanded] = useState(false);
   const {
     Price,
     QuantityPurchases,
@@ -42,15 +43,6 @@ function OrderCard({ order }) {
 
   const statusInfo = status(Status);
   const { copyText } = useCopyToClipboard();
-
-  const [isExpanded, setIsExpanded] = useState(() => {
-    const saved = localStorage.getItem(`orderExpanded_${DeliveryNumber}`);
-    return saved !== null ? JSON.parse(saved) : false;
-  });
-
-  useEffect(() => {
-    localStorage.setItem(`orderExpanded_${DeliveryNumber}`, JSON.stringify(isExpanded));
-  }, [isExpanded, DeliveryNumber]);
 
   const toggleExpand = () => setIsExpanded(!isExpanded);
 

@@ -33,6 +33,7 @@ function DrawerPanel() {
       await logout();
       navigate('/login');
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Ошибка при попытке выходе', error);
     }
   };
