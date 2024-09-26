@@ -20,7 +20,6 @@ const useCopyToClipboard = () => {
       await navigator.clipboard.writeText(text);
       toast({
         title: 'Успешно скопировано',
-        description: 'Токен успешно скопирован.',
         status: 'success',
         duration: 2000,
         isClosable: true,

@@ -17,6 +17,7 @@ import { status } from '../utils/status';
 import { convertTimestamp } from '../utils/convertTimestamp';
 import { useMapType } from '../contexts/MapTypeContext';
 import { createMapLink } from '../utils/createMapLink';
+import { Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
 
 function Order() {
   const { OrderId } = useParams();
@@ -111,7 +112,7 @@ function Order() {
           icon={customIcon}
           eventHandlers={{
             click: () => {
-              window.open(createMapLink(Address, mapType), '_blank');
+              window.open(createMapLink(`${Latitude},${Longitude}`, mapType), '_blank');
             },
           }}
         />
@@ -165,7 +166,7 @@ function Order() {
                 <Td>
                   Адрес:
                 </Td>
-                <Td whiteSpace="pre-wrap" fontWeight="bold"><Link href={createMapLink(Address, mapType)} fontSize="sm" isExternal>{Address}</Link></Td>
+                <Td whiteSpace="pre-wrap" fontWeight="bold"><Link href={createMapLink(`${Latitude},${Longitude}`, mapType)} fontSize="sm" isExternal>{Address}</Link></Td>
               </Tr>
               {ClientName && (
                 <Tr>

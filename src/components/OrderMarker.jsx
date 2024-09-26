@@ -33,7 +33,7 @@ function OrderMarker({ order }) {
           {convertTimestamp(order.WishingDate, 'HH:mm')}
         </Text>
         <Box display="flex" flexDirection="row">
-          <Link href={createMapLink(order.Address, mapType)} fontSize="sm" isExternal>Маршрут</Link>
+          <Link href={createMapLink(`${order.Latitude},${order.Longitude}`, mapType)} fontSize="sm" isExternal>Маршрут</Link>
         </Box>
       </Tooltip>
     </Marker>

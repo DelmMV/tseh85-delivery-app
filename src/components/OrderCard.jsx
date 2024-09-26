@@ -5,9 +5,12 @@ import {
   Card,
   CardBody,
   Divider,
-  Link,
   Stack,
   Text,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { BsTelephone } from 'react-icons/bs';
@@ -21,7 +24,6 @@ import { RenderIconWishes } from './RenderIconWishes';
 import { RenderTextWishes } from './RenderTextWishes';
 import { RenderIconComments } from './RenderIconComments';
 import { createMapLink } from '../utils/createMapLink';
-import { Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
 
 function OrderCard({ order }) {
   const {
