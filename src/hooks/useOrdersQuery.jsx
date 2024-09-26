@@ -44,7 +44,7 @@ export function useOrdersQuery() {
     cacheTime: 30 * 60 * 1000,
     retry: 1,
     retryDelay: 1000,
-    refetchInterval: 30000,
+    refetchInterval: 15000,
     refetchIntervalInBackground: true,
     onSuccess: () => {
       queryClient.invalidateQueries('orders');

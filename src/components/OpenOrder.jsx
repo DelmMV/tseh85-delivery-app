@@ -1,6 +1,6 @@
-import React, { useCallback, useState, memo } from 'react';
+import React, { useCallback, useState, memo, useEffect } from 'react';
 import {
-  Box, Button, Collapse, useDisclosure, Text,
+  Box, Button, Text, useDisclosure,
 } from '@chakra-ui/react';
 import { NavLink } from 'react-router-dom';
 import { useOrderQuery } from '../hooks/useOrderQuery';
@@ -14,12 +14,27 @@ function OpenOrder({
   OrderId,
   Status,
 }) {
-  const { isOpen, onClose, onToggle } = useDisclosure();
+  const [isContentVisible, setIsContentVisible] = useState(() => {
+    const saved = localStorage.getItem(`order_${OrderId}_visible`);
+    return saved !== null ? JSON.parse(saved) : false;
+  });
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
   const [currentAction, setCurrentAction] = useState(null);
 
-  const { data: getOrder, isLoading, isError } = useOrderQuery(OrderId, { enabled: isOpen });
-  const [selectedItems, setSelectedItems] = useState({});
+  const { data: getOrder, isLoading, isError } = useOrderQuery(OrderId, { enabled: isContentVisible });
+  const [selectedItems, setSelectedItems] = useState(() => {
+    const saved = localStorage.getItem(`order_${OrderId}_selected_items`);
+    return saved !== null ? JSON.parse(saved) : {};
+  });
+
+  useEffect(() => {
+    localStorage.setItem(`order_${OrderId}_visible`, JSON.stringify(isContentVisible));
+  }, [isContentVisible, OrderId]);
+
+  useEffect(() => {
+    localStorage.setItem(`order_${OrderId}_selected_items`, JSON.stringify(selectedItems));
+  }, [selectedItems, OrderId]);
+
   const handleCheckboxChange = useCallback((itemId) => {
     setSelectedItems((prevSelectedItems) => ({
       ...prevSelectedItems,
@@ -107,21 +122,35 @@ function OpenOrder({
   return (
     <>
       <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" padding="0 0 0 0">
-        <Button onClick={onToggle} height="35px" variant="outline">Состав</Button>
+        <Button onClick={() => setIsContentVisible(!isContentVisible)} height="35px" variant="outline">
+          {isContentVisible ? 'Скрыть состав' : 'Показать состав'}
+        </Button>
         <Button height="35px" variant="outline">
           <NavLink to={`order/${OrderId}`}>Подробнее</NavLink>
         </Button>
         {renderStatusButton()}
       </Box>
 
-      <Collapse in={isOpen} animateOpacity>
+      {isContentVisible && (
         <Box>
           <Box padding="7px 0 0 0">
             {renderContent()}
           </Box>
           <Box display="flex" flexDir="row" justifyContent="space-between" alignItems="center">
             <Box>
-              {isAllSelected && <Button width="60px" height="20px" fontSize="sm" fontWeight="extrabold" variant="outline" colorScheme="green" onClick={onClose}>Готово</Button>}
+              {isAllSelected && (
+                <Button
+                  width="60px"
+                  height="20px"
+                  fontSize="sm"
+                  fontWeight="extrabold"
+                  variant="outline"
+                  colorScheme="green"
+                  onClick={() => setIsContentVisible(false)}
+                >
+                  Готово
+                </Button>
+              )}
             </Box>
             <Box display="flex" flexDir="row" alignItems="center" justifyContent="center">
               <Text>Всего&#160;</Text>
@@ -134,7 +163,7 @@ function OpenOrder({
             </Box>
           </Box>
         </Box>
-      </Collapse>
+      )}
       <ConfirmationModal
         isOpen={isModalOpen}
         onClose={onModalClose}

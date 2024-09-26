@@ -8,7 +8,6 @@ import { useSearch } from '../contexts/SearchContext';
 import { useSelectorFilter } from '../contexts/SelectorFilterContext';
 import { useOrdersQuery } from '../hooks/useOrdersQuery';
 
-
 function Main() {
   const toast = useToast();
   const { data: orders, isLoading, error } = useOrdersQuery();
