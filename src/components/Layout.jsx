@@ -7,7 +7,7 @@ import { NavBottom } from './NavBottom';
 function Layout() {
   return (
     <>
-      <Box minWidth="400px" position="fixed" width="100%" zIndex="1">
+      <Box minWidth="400px" position="fixed" width="100%" zIndex="1" display="flex" justifyContent="center">
         <NavBar />
       </Box>
       <Box minWidth="400px">

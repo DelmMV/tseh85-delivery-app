@@ -25,7 +25,7 @@ function NavBar() {
   return (
     <Box {...handlers}>
       <Card
-        borderRadius="none"
+        borderRadius="0 0 5px 5px"
         borderTop="none"
         bg={backgroundColor}
         height="105px"
