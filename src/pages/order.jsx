@@ -3,9 +3,10 @@ import {
 } from '@chakra-ui/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import React, {
-  useCallback, useMemo, useState, useEffect,
+  useCallback, useMemo, useState,
 } from 'react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import L from 'leaflet';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { useOrderQuery } from '../hooks/useOrderQuery';
 import OrderContent from '../components/OrderContent';
@@ -21,25 +22,13 @@ function Order() {
   const { OrderId } = useParams();
   const { data: getOrder, isLoading, isError } = useOrderQuery(OrderId);
   const { data: orders } = useOrdersQuery();
-  const [selectedItems, setSelectedItems] = useState(() => {
-    const saved = localStorage.getItem(`order_${OrderId}_selected_items`);
-    return saved !== null ? JSON.parse(saved) : {};
-  });
-
-  useEffect(() => {
-    localStorage.setItem(`order_${OrderId}_selected_items`, JSON.stringify(selectedItems));
-  }, [selectedItems, OrderId]);
-
+  const [selectedItems, setSelectedItems] = useState({});
   const handleCheckboxChange = useCallback((itemId) => {
-    setSelectedItems((prevSelectedItems) => {
-      const newSelectedItems = {
-        ...prevSelectedItems,
-        [itemId]: !prevSelectedItems[itemId],
-      };
-      localStorage.setItem(`order_${OrderId}_selected_items`, JSON.stringify(newSelectedItems));
-      return newSelectedItems;
-    });
-  }, [OrderId]);
+    setSelectedItems((prevSelectedItems) => ({
+      ...prevSelectedItems,
+      [itemId]: !prevSelectedItems[itemId],
+    }));
+  }, []);
 
   const isAllSelected = getOrder && getOrder.every((item) => selectedItems[item.RowId]);
   const navigate = useNavigate(); // Используем useNavigate для программной навигации
@@ -102,6 +91,15 @@ function Order() {
 
     const position = [Latitude, Longitude];
 
+    const customIcon = L.icon({
+      iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+      shadowSize: [41, 41],
+    });
+
     return (
       <MapContainer center={position} zoom={13} style={{ height: '200px', width: '100%' }} zoomControl={false} attributionControl={false}>
         <TileLayer
@@ -110,6 +108,7 @@ function Order() {
         />
         <Marker
           position={position}
+          icon={customIcon}
           eventHandlers={{
             click: () => {
               window.open(createMapLink(Address, mapType), '_blank');
@@ -164,7 +163,7 @@ function Order() {
             <Tbody>
               <Tr>
                 <Td>
-                  Адес:
+                  Адрес:
                 </Td>
                 <Td whiteSpace="pre-wrap" fontWeight="bold"><Link href={createMapLink(Address, mapType)} fontSize="sm" isExternal>{Address}</Link></Td>
               </Tr>
