@@ -26,7 +26,7 @@ function DrawerPanel() {
   const { data: settings, isLoading, isError } = useSettingsQuery();
   const { data: orders } = useOrdersQuery();
   const filterDelivery = orders?.filter((item) => item.CheckoutUserName === settings?.Name);
-  const { mapType, changeMapType } = useMapType(); // Использование хука useMapType
+  const { mapType, changeMapType } = useMapType();
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
@@ -39,6 +39,12 @@ function DrawerPanel() {
   };
 
   const { copyText } = useCopyToClipboard();
+
+  const generateTelegramLink = () => {
+    const baseUrl = 'https://t.me/Delivery_tseh85_bot';
+    return `${baseUrl}`;
+  };
+
   return (
     <>
       <Button ref={btnRef} onClick={onOpen}>
@@ -61,7 +67,6 @@ function DrawerPanel() {
               if (isError) {
                 return <p>Ошибка загрузки настроек</p>;
               }
-              // Здесь возвращаем содержимое для случая, когда нет загрузки и ошибки
               return (
                 <Box>
                   <Box>
@@ -114,6 +119,20 @@ function DrawerPanel() {
                       <Button onClick={() => changeMapType('2gis')} colorScheme={mapType === '2gis' ? 'blue' : 'gray'}>2GIS</Button>
                     </Box>
                   </Box>
+                  <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" marginTop="10px">
+                    <Text fontSize="sm">Уведомления:</Text>
+                    <Button
+                      onClick={() => {
+                        const token = localStorage.getItem('token');
+                        const command = `/token ${token}`;
+                        copyText(command); // Копируем команду в буфер обмена
+                        window.location.href = generateTelegramLink(token); // Редирект на телеграм бота
+                      }}
+                      colorScheme="telegram"
+                    >
+                      Telegram Bot
+                    </Button>
+                  </Box>
                 </Box>
               );
             })()}
@@ -130,5 +149,4 @@ function DrawerPanel() {
     </>
   );
 }
-
 export { DrawerPanel };
