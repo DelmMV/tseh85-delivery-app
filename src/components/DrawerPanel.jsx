@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useAuth } from '../router/AuthProvider';
 import { useSettingsQuery } from '../hooks/useSettingsQuery';
 import { ThemeToggle } from './ThemeToggle';
@@ -43,6 +43,34 @@ function DrawerPanel() {
   const generateTelegramLink = () => {
     const baseUrl = 'https://t.me/Delivery_tseh85_bot';
     return `${baseUrl}`;
+  };
+
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+      } else {
+        console.log('User dismissed the install prompt');
+      }
+      setDeferredPrompt(null);
+    }
   };
 
   return (
@@ -133,15 +161,19 @@ function DrawerPanel() {
                       Telegram Bot
                     </Button>
                   </Box>
+                  {deferredPrompt && (
+                    <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" marginTop="10px">
+                      <Text fontSize="sm">Установить приложение:</Text>
+                      <Button onClick={handleInstallClick} colorScheme="blue" mt={4}>
+                        Установить
+                      </Button>
+                    </Box>
+                  )}
                 </Box>
               );
             })()}
           </DrawerBody>
-
-          <DrawerFooter display="flex" justifyContent="space-between">
-            <Button variant="outline" mr={3} onClick={onClose}>
-              Закрыть
-            </Button>
+          <DrawerFooter display="flex" justifyContent="end">
             <Button bg="red.700" onClick={handleLogout}>Выйти</Button>
           </DrawerFooter>
         </DrawerContent>
@@ -149,4 +181,5 @@ function DrawerPanel() {
     </>
   );
 }
+
 export { DrawerPanel };
