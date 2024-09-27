@@ -53,7 +53,7 @@ function OrderCard({ order }) {
 
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
-  const shortenedAddress = Address.length > 40 ? `${Address.substring(0, 40)}...` : Address;
+  const shortenedAddress = Address.length > 65 ? `${Address.substring(0, 65)}...` : Address;
 
   useEffect(() => {
     localStorage.setItem(`isExpanded_${DeliveryNumber}`, JSON.stringify(isExpanded));
@@ -70,7 +70,7 @@ function OrderCard({ order }) {
       margin="0 0 0 0"
       padding="0 5px 0 5px"
     >
-      <CardBody width="380px" padding="0 3px 0 3px">
+      <CardBody width="360px" padding="0 3px 0 3px">
         <Stack spacing="1">
           <Box display="flex" flexDirection="row" justifyContent="space-between" marginTop="3px">
             <Box display="flex" flexDirection="row" alignItems="center" onClick={() => copyText(DeliveryNumber)}>
@@ -123,7 +123,7 @@ function OrderCard({ order }) {
           </Box>
           <Box display="flex" flexDirection="row" justifyContent="space-between">
             <Box display="flex" flexDirection="row" alignItems="center">
-              <Text fontSize="sm">Доставить до:&#160;</Text>
+              <Text fontSize="sm">Доставить:&#160;</Text>
               <Text fontSize="md" fontWeight="bold">
                 {convertTimestamp(WishingDate, 'HH:mm')}
               </Text>
