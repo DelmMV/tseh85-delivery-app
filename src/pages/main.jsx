@@ -8,6 +8,7 @@ import { useSearch } from '../contexts/SearchContext';
 import { useSelectorFilter } from '../contexts/SelectorFilterContext';
 import { useOrdersQuery } from '../hooks/useOrdersQuery';
 import { cleanLocalStorage } from '../utils/cleanLocalStorage';
+import { useArchivedOrders } from '../hooks/useArchivedOrders';
 
 function Main() {
   const toast = useToast();
@@ -29,11 +30,14 @@ function Main() {
     }
   }, [error, toast]);
 
+  const { updateArchive } = useArchivedOrders();
+
   useEffect(() => {
     if (orders) {
       cleanLocalStorage(orders);
+      updateArchive(orders);
     }
-  }, [orders]);
+  }, [orders, updateArchive]);
 
   const filterOrders = useCallback((orderList) => orderList.filter((order) => {
     const isActive = filter === 'active' ? order.Status !== 7 : order.Status === 7;
@@ -67,6 +71,7 @@ function Main() {
     >
       {!isLoading ? (
         filteredOrders.map((order, index) => (
+          // eslint-disable-next-line react/no-array-index-key
           <MemoizedOrderCard order={order} key={`${order.OrderID}-${index}`} />
         ))
       ) : (

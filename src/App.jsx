@@ -15,6 +15,7 @@ import { MapComponent } from './pages/map';
 import { PageNotFound } from './pages/page-not-found';
 import ProtectedRoute from './router/ProtectedRoute';
 import { Order } from './pages/order';
+import { OrderStatistics } from './pages/OrderStatistics';
 
 const queryClient = new QueryClient();
 function App() {
@@ -43,6 +44,9 @@ function App() {
                         </ProtectedRoute>
           )}
                     />
+                    <Route element={<Layout />}>
+                      <Route path="/statistics" element={<OrderStatistics />} />
+                    </Route>
                   </Route>
                   <Route path="*" element={<PageNotFound />} />
                   <Route path="login" element={<Login />} />

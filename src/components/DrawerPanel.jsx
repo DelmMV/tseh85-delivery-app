@@ -65,8 +65,10 @@ function DrawerPanel() {
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
       if (outcome === 'accepted') {
+        // eslint-disable-next-line no-console
         console.log('User accepted the install prompt');
       } else {
+        // eslint-disable-next-line no-console
         console.log('User dismissed the install prompt');
       }
       setDeferredPrompt(null);

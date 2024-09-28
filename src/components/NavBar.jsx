@@ -23,6 +23,7 @@ function NavBar() {
   });
 
   return (
+    // eslint-disable-next-line react/jsx-props-no-spreading
     <Box {...handlers}>
       <Card
         borderRadius="0 0 5px 5px"

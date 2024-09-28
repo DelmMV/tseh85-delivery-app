@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useArchivedOrders } from "./useArchivedOrders";
 
 export const useSubmitOrder = () => {
   const queryClient = useQueryClient();
@@ -31,9 +32,13 @@ export const useSubmitOrder = () => {
 
   return useMutation({
     mutationFn: submitOrder,
-    onSuccess: () => {
-      // Инвалидируем кэш запроса orders после успешного обновления
+    onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });
+      if (variables.Status === 7) {
+        const { updateArchive } = useArchivedOrders();
+        const currentOrders = queryClient.getQueryData(['orders']) || [];
+        updateArchive([...currentOrders, { ...variables, Status: 7 }]);
+      }
     },
     onError: (error) => {
       // eslint-disable-next-line no-console

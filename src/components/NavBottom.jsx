@@ -3,7 +3,7 @@ import {
   Box, Text, Center, Divider, Icon, useColorMode, Button,
 } from '@chakra-ui/react';
 import { NavLink } from 'react-router-dom';
-import { FaMap, FaListAlt } from 'react-icons/fa';
+import { FaMap, FaListAlt, FaChartBar } from 'react-icons/fa';
 
 function NavBottom() {
   const { colorMode } = useColorMode();
@@ -33,6 +33,10 @@ function NavBottom() {
         <Divider orientation="vertical" />
       </Center>
       {renderNavLink('/map', FaMap, 'Карта')}
+      <Center>
+        <Divider orientation="vertical" />
+      </Center>
+      {renderNavLink('/statistics', FaChartBar, 'Статистика')}
     </Box>
   );
 }

@@ -1,4 +1,7 @@
 function cleanLocalStorage(orders) {
+  // Сохраняем все текущие заказы
+  localStorage.setItem('currentOrders', JSON.stringify(orders));
+
   const currentTime = new Date().getTime();
   const oneDay = 24 * 60 * 60 * 1000; // 24 часа в миллисекундах
 
