@@ -3,7 +3,7 @@ import {
 } from '@chakra-ui/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import React, {
-  useCallback, useMemo, useState,
+  useCallback, useMemo, useState, useEffect,
 } from 'react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import L from 'leaflet';
@@ -23,13 +23,25 @@ function Order() {
   const { OrderId } = useParams();
   const { data: getOrder, isLoading, isError } = useOrderQuery(OrderId);
   const { data: orders } = useOrdersQuery();
-  const [selectedItems, setSelectedItems] = useState({});
+  const [selectedItems, setSelectedItems] = useState(() => {
+    const saved = localStorage.getItem(`order_${OrderId}_selected_items`);
+    return saved !== null ? JSON.parse(saved) : {};
+  });
+
+  useEffect(() => {
+    localStorage.setItem(`order_${OrderId}_selected_items`, JSON.stringify(selectedItems));
+  }, [selectedItems, OrderId]);
+
   const handleCheckboxChange = useCallback((itemId) => {
-    setSelectedItems((prevSelectedItems) => ({
-      ...prevSelectedItems,
-      [itemId]: !prevSelectedItems[itemId],
-    }));
-  }, []);
+    setSelectedItems((prevSelectedItems) => {
+      const newSelectedItems = {
+        ...prevSelectedItems,
+        [itemId]: !prevSelectedItems[itemId],
+      };
+      localStorage.setItem(`order_${OrderId}_selected_items`, JSON.stringify(newSelectedItems));
+      return newSelectedItems;
+    });
+  }, [OrderId]);
 
   const isAllSelected = getOrder && getOrder.every((item) => selectedItems[item.RowId]);
   const navigate = useNavigate(); // Используем useNavigate для программной навигации
