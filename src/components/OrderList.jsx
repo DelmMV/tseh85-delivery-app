@@ -19,10 +19,11 @@ function OrderList({ orders }) {
           >
             <Box p={3} borderWidth={1} borderRadius="md" _hover={{ bg: 'gray.100' }}>
               <Text fontWeight="bold" fontSize="smaller">
-                Заказ №{orderId}
+                №
+                {orderId}
               </Text>
               <Text fontSize="smaller">
-                Дата: {order.DateComplete ? new Date(order.DateComplete).toLocaleDateString() : 'Нет данных'}
+                {order.DateComplete ? new Date(order.DateComplete).toLocaleDateString() : 'Нет данных'}
               </Text>
             </Box>
           </Link>

@@ -104,11 +104,15 @@ function OrderStatistics() {
           </ResponsiveContainer>
         </Box>
         <Flex justify="space-between">
-          <Text fontWeight="bold">Всего заказов: {filteredOrders.length}</Text>
+          <Text fontWeight="bold">
+            Всего заказов:
+            {' '}
+            {filteredOrders.length}
+          </Text>
           <Text fontWeight="bold">
             Средний заказ в день:
             {' '}
-            {(filteredOrders.length / chartData.length || 1).toFixed(2)}
+            {(filteredOrders.length / chartData.length || 1).toFixed(0)}
           </Text>
         </Flex>
         <EarningsDisplay orders={filteredOrders} />
