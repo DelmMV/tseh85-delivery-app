@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Text, Input, VStack, HStack, Divider, Button } from '@chakra-ui/react';
+import {
+  Box, Text, Input, VStack, HStack, Divider, Button,
+} from '@chakra-ui/react';
 
 function EarningsDisplay({ orders }) {
-  const [pricePerOrder, setPricePerOrder] = useState(() => {
-    return localStorage.getItem('pricePerOrder') || '200';
-  });
+  const [pricePerOrder, setPricePerOrder] = useState(() => localStorage.getItem('pricePerOrder') || '200');
   const [orderCount, setOrderCount] = useState(orders.length);
-  const [hoursWorked, setHoursWorked] = useState(() => {
-    return localStorage.getItem('hoursWorked') || '0';
-  });
-  const [pricePerHour, setPricePerHour] = useState(() => {
-    return localStorage.getItem('pricePerHour') || '0';
-  });
+  const [hoursWorked, setHoursWorked] = useState(() => localStorage.getItem('hoursWorked') || '0');
+  const [pricePerHour, setPricePerHour] = useState(() => localStorage.getItem('pricePerHour') || '0');
   const [totalEarnings, setTotalEarnings] = useState(0);
 
   useEffect(() => {
@@ -105,10 +101,20 @@ function EarningsDisplay({ orders }) {
         </HStack>
         <Divider />
         <Text fontWeight="bold" fontSize="xl">
-          Общий заработок: {totalEarnings} руб.
+          Общий заработок:
+          {totalEarnings}
+          {' '}
+          руб.
         </Text>
         <Text fontSize="sm" color="gray.500">
-          (За заказы: {orderCount * Number(pricePerOrder)} руб. + За часы: {Number(hoursWorked) * Number(pricePerHour)} руб.)
+          (За заказы:
+          {' '}
+          {orderCount * Number(pricePerOrder)}
+          {' '}
+          руб. + За часы:
+          {Number(hoursWorked) * Number(pricePerHour)}
+          {' '}
+          руб.)
         </Text>
       </VStack>
     </Box>
