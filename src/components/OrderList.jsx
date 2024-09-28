@@ -1,35 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  SimpleGrid, Box, Text, Link,
+  SimpleGrid, Box, Text, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, useDisclosure
 } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
+import { OrderCard } from './OrderCard';
 
 function OrderList({ orders }) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedOrder, setSelectedOrder] = useState(null);
+
+  const handleOrderClick = (order) => {
+    setSelectedOrder(order);
+    onOpen();
+  };
+
   return (
-    <SimpleGrid columns={3} spacing={4}>
-      {orders.map((order) => {
-        const orderId = order.OrderId || order.id || order._id || 'Нет данных';
-        return (
-          <Link
-            as={RouterLink}
-            to={`/order/${orderId}`}
-            key={orderId}
-            textDecoration="none"
-            _hover={{ textDecoration: 'none' }}
+    <>
+      <SimpleGrid columns={3} spacing={4}>
+        {orders.map((order) => (
+          <Box
+            key={order.OrderId}
+            p={3}
+            borderWidth={1}
+            borderRadius="md"
+            _hover={{ bg: 'gray.100', cursor: 'pointer' }}
+            onClick={() => handleOrderClick(order)}
           >
-            <Box p={3} borderWidth={1} borderRadius="md" _hover={{ bg: 'gray.100' }}>
-              <Text fontWeight="bold" fontSize="smaller">
-                №
-                {orderId}
-              </Text>
-              <Text fontSize="smaller">
-                {order.DateComplete ? new Date(order.DateComplete).toLocaleDateString() : 'Нет данных'}
-              </Text>
-            </Box>
-          </Link>
-        );
-      })}
-    </SimpleGrid>
+            <Text fontWeight="bold" fontSize="smaller">
+              №{order.DeliveryNumber}
+            </Text>
+            <Text fontSize="smaller">
+              {order.DateComplete ? new Date(order.DateComplete).toLocaleDateString() : 'Нет данных'}
+            </Text>
+          </Box>
+        ))}
+      </SimpleGrid>
+
+      <Modal isOpen={isOpen} onClose={onClose} size="xl" isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Детали заказа №{selectedOrder?.DeliveryNumber}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {selectedOrder && <OrderCard order={selectedOrder} />}
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
   );
 }
 

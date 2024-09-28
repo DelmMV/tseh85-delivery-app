@@ -39,7 +39,7 @@ function MapComponent() {
   }, [orders, filter, searchQuery, selectorFilter]);
 
   return (
-    <AspectRatio zIndex="0" ratio={21 / 9} position="relative" top="100px">
+    <AspectRatio zIndex="0" ratio={21 / 9} position="relative">
       <MapContainer
         center={position}
         zoom={11}
