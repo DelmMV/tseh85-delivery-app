@@ -14,9 +14,9 @@ function ConfirmationModal({
   isOpen, onClose, onConfirm, title, message, isLoading,
 }) {
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent margin="1rem">
         <ModalHeader>{title}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
