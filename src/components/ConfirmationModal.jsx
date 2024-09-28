@@ -8,11 +8,10 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
-  Text,
 } from '@chakra-ui/react';
 
 function ConfirmationModal({
-  isOpen, onClose, onConfirm, title, message,
+  isOpen, onClose, onConfirm, title, message, isLoading,
 }) {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -21,13 +20,15 @@ function ConfirmationModal({
         <ModalHeader>{title}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Text>{message}</Text>
+          {message}
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={onConfirm}>
+          <Button variant="ghost" onClick={onClose}>
+            Отмена
+          </Button>
+          <Button colorScheme="blue" onClick={onConfirm} isLoading={isLoading}>
             Подтвердить
           </Button>
-          <Button variant="ghost" onClick={onClose}>Отмена</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

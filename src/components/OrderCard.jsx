@@ -131,7 +131,7 @@ function OrderCard({ order }) {
             <Text fontSize="sm">{Nearest ? 'Ближайшее' : ' '}</Text>
             <Text fontSize="md" display="flex" flexDirection="row" alignItems="center" fontWeight="bold">
               <BsTelephone padding="0" margin="5px" />
-              <a href={`tel:${ClientPhone}`}>
+              <a href={`tel:+${ClientPhone}`}>
                 +
                 {ClientPhone}
               </a>
