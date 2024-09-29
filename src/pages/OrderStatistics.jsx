@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box, Heading, VStack, HStack, Text, Flex, Button,
+  Box, Heading, VStack, HStack, Text, Flex, Button, Card,
 } from '@chakra-ui/react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -16,12 +16,18 @@ import { EarningsDisplay } from '../components/EarningsDisplay';
 registerLocale('ru', ru);
 
 function OrderStatistics() {
-  const [startDate, setStartDate] = useState(new Date(new Date().setMonth(new Date().getMonth() - 1)));
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(() => {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), 1);
+  });
+  const [endDate, setEndDate] = useState(() => {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  });
   const [chartData, setChartData] = useState([]);
   const { archivedOrders } = useArchivedOrders();
   const [currentPage, setCurrentPage] = useState(1);
-  const ordersPerPage = 30;
+  const ordersPerPage = 50;
 
   const [filteredOrders, setFilteredOrders] = useState([]);
 
@@ -84,7 +90,7 @@ function OrderStatistics() {
             placeholderText="Выберите конечную дату"
           />
         </HStack>
-        <Box height="150px">
+        <Card height="150px">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={chartData}
@@ -102,19 +108,21 @@ function OrderStatistics() {
               <Bar dataKey="orders" fill="#8884d8" />
             </BarChart>
           </ResponsiveContainer>
-        </Box>
-        <Flex justify="space-between">
-          <Text fontWeight="bold">
-            Всего заказов:
-            {' '}
-            {filteredOrders.length}
-          </Text>
-          <Text fontWeight="bold">
-            Средний заказ в день:
-            {' '}
-            {(filteredOrders.length / chartData.length || 1).toFixed(0)}
-          </Text>
-        </Flex>
+        </Card>
+        <Card p={1}>
+          <Flex justify="space-between">
+            <Text fontWeight="bold">
+              Всего заказов:
+              {' '}
+              {filteredOrders.length}
+            </Text>
+            <Text fontWeight="bold">
+              Средний заказ в день:
+              {' '}
+              {(filteredOrders.length / chartData.length || 1).toFixed(0)}
+            </Text>
+          </Flex>
+        </Card>
         <EarningsDisplay orders={filteredOrders} />
         <OrderList orders={paginatedOrders} />
         <HStack justifyContent="center" mt={4}>

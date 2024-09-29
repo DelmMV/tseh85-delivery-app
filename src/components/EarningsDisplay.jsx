@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box, Text, Input, VStack, HStack, Divider, Button,
+  Card, Text, Input, VStack, HStack, Divider, Button,
 } from '@chakra-ui/react';
 
 function EarningsDisplay({ orders }) {
@@ -50,7 +50,7 @@ function EarningsDisplay({ orders }) {
   };
 
   return (
-    <Box borderWidth={1} borderRadius="lg" p={4}>
+    <Card borderWidth={1} borderRadius="lg" p={4} borderColor="#4a2e2e4d">
       <VStack align="stretch" spacing={4}>
         <HStack justify="space-between">
           <Text>Цена за заказ:</Text>
@@ -117,7 +117,7 @@ function EarningsDisplay({ orders }) {
           руб.)
         </Text>
       </VStack>
-    </Box>
+    </Card>
   );
 }
 
