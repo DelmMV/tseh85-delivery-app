@@ -50,39 +50,47 @@ function EarningsDisplay({ orders }) {
   };
 
   return (
-    <Card borderWidth={1} borderRadius="lg" p={4} borderColor="#4a2e2e4d">
-      <VStack align="stretch" spacing={4}>
+    <Card borderWidth={1} borderRadius="lg" p={6} borderColor="#4a2e2e4d">
+      <VStack align="stretch" spacing={5}>
         <HStack justify="space-between">
-          <Text>Цена за заказ:</Text>
-          <Input
-            value={pricePerOrder}
-            onChange={handlePriceChange}
-            type="number"
-            width="100px"
-          />
-          <Text>руб.</Text>
+          <Text fontWeight="medium">Цена за заказ:</Text>
+          <HStack spacing={2}>
+            <Input
+              value={pricePerOrder}
+              onChange={handlePriceChange}
+              type="number"
+              width="80px"
+              textAlign="right"
+            />
+            <Text width="40px">руб.</Text>
+          </HStack>
         </HStack>
         <HStack justify="space-between">
-          <Text>Количество заказов:</Text>
+          <Text fontWeight="medium">Количество заказов:</Text>
           <Input
             value={orderCount}
             onChange={handleOrderCountChange}
             type="number"
-            width="100px"
+            width="80px"
+            textAlign="right"
           />
+					<Text width="30px">шт.</Text>
         </HStack>
-        <VStack align="stretch">
+        <VStack align="stretch" spacing={2}>
           <HStack justify="space-between">
-            <Text>Часы работы:</Text>
-            <Input
-              value={hoursWorked}
-              onChange={handleHoursChange}
-              type="number"
-              width="100px"
-            />
-            <Text>ч.</Text>
+            <Text fontWeight="medium">Часы работы:</Text>
+            <HStack spacing={2}>
+              <Input
+                value={hoursWorked}
+                onChange={handleHoursChange}
+                type="number"
+                width="80px"
+                textAlign="right"
+              />
+              <Text width="30px">ч.</Text>
+            </HStack>
           </HStack>
-          <HStack justify="flex-end">
+          <HStack justify="flex-end" spacing={2}>
             <Button size="sm" onClick={() => adjustHours(-12)}>-12</Button>
             <Button size="sm" onClick={() => adjustHours(-1)}>-1</Button>
             <Button size="sm" onClick={() => adjustHours(1)}>+1</Button>
@@ -90,32 +98,28 @@ function EarningsDisplay({ orders }) {
           </HStack>
         </VStack>
         <HStack justify="space-between">
-          <Text>Цена за час работы:</Text>
-          <Input
-            value={pricePerHour}
-            onChange={handleHourlyRateChange}
-            type="number"
-            width="100px"
-          />
-          <Text>руб./ч</Text>
+          <Text fontWeight="medium">Цена за час работы:</Text>
+          <HStack spacing={2}>
+            <Input
+              value={pricePerHour}
+              onChange={handleHourlyRateChange}
+              type="number"
+              width="80px"
+              textAlign="right"
+            />
+            <Text width="50px">руб./ч</Text>
+          </HStack>
         </HStack>
         <Divider />
-        <Text fontWeight="bold" fontSize="xl">
-          Общий заработок:
-          {totalEarnings}
-          {' '}
-          руб.
-        </Text>
-        <Text fontSize="sm" color="gray.500">
-          (За заказы:
-          {' '}
-          {orderCount * Number(pricePerOrder)}
-          {' '}
-          руб. + За часы:
-          {Number(hoursWorked) * Number(pricePerHour)}
-          {' '}
-          руб.)
-        </Text>
+        <VStack align="stretch" spacing={1}>
+          <Text fontWeight="bold" fontSize="xl">
+            Общий заработок: {totalEarnings.toLocaleString()} руб.
+          </Text>
+          <Text fontSize="sm" color="gray.500">
+            (За заказы: {(orderCount * Number(pricePerOrder)).toLocaleString()} руб. + 
+            За часы: {(Number(hoursWorked) * Number(pricePerHour)).toLocaleString()} руб.)
+          </Text>
+        </VStack>
       </VStack>
     </Card>
   );
