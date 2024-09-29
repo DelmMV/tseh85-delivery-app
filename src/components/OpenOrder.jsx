@@ -173,7 +173,6 @@ function OpenOrder({
         onConfirm={handleConfirm}
         title={currentAction === 'confirm' ? 'Подтвердить заказ' : 'Заказ получен'}
         message={currentAction === 'confirm' ? 'Вы уверены, что хотите подтвердить этот заказ?' : 'Вы уверены, что заказ получен?'}
-        isLoading={isSubmitting}
       />
     </>
   );

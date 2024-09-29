@@ -74,7 +74,7 @@ function EarningsDisplay({ orders }) {
             width="80px"
             textAlign="right"
           />
-					<Text width="30px">шт.</Text>
+          <Text width="30px">шт.</Text>
         </HStack>
         <VStack align="stretch" spacing={2}>
           <HStack justify="space-between">
@@ -113,7 +113,10 @@ function EarningsDisplay({ orders }) {
         <Divider />
         <VStack align="stretch" spacing={1}>
           <Text fontWeight="bold" fontSize="xl">
-            Общий заработок: {totalEarnings.toLocaleString()} руб.
+            Общий заработок:
+            {totalEarnings.toLocaleString()}
+            {' '}
+            руб.
           </Text>
           <Text fontSize="sm" color="gray.500">
             (За заказы: {(orderCount * Number(pricePerOrder)).toLocaleString()} руб. + 

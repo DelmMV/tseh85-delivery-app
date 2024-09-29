@@ -12,13 +12,13 @@ function cleanLocalStorage(orders) {
   const oneDay = 24 * 60 * 60 * 1000; // 24 часа в миллисекундах
 
   Object.keys(localStorage).forEach((key) => {
-    if (key.startsWith('order_') || key.startsWith('orderExpanded_')) {
+    if (key.startsWith('order_') || key.startsWith('orderExpanded_') || key.startsWith('isExpanded_')) {
       const orderId = key.split('_')[1];
-      const orderExists = userOrders.some((order) => order.OrderId.toString() === orderId);
+      const orderExists = userOrders.some((order) => order.OrderId.toString() === orderId || order.DeliveryNumber.toString() === orderId);
 
       if (!orderExists) {
         localStorage.removeItem(key);
-      } else {
+      } else if (key.startsWith('order_')) {
         const item = JSON.parse(localStorage.getItem(key));
         if (item && item.timestamp && currentTime - item.timestamp > oneDay) {
           localStorage.removeItem(key);
