@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
   Card, Text, Input, VStack, HStack, Divider, Button,
+  Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Box,
+  SimpleGrid
 } from '@chakra-ui/react';
 
 function EarningsDisplay({ orders }) {
@@ -43,88 +45,97 @@ function EarningsDisplay({ orders }) {
     localStorage.setItem('pricePerHour', newRate);
   };
 
-  const adjustHours = (amount) => {
-    const newHours = Math.max(0, Number(hoursWorked) + amount);
-    setHoursWorked(newHours.toString());
-    localStorage.setItem('hoursWorked', newHours.toString());
-  };
-
   return (
-    <Card borderWidth={1} borderRadius="lg" p={6} borderColor="#4a2e2e4d">
-      <VStack align="stretch" spacing={5}>
-        <HStack justify="space-between">
-          <Text fontWeight="medium">Цена за заказ:</Text>
-          <HStack spacing={2}>
-            <Input
-              value={pricePerOrder}
-              onChange={handlePriceChange}
-              type="number"
-              width="80px"
-              textAlign="right"
-            />
-            <Text width="40px">руб.</Text>
-          </HStack>
-        </HStack>
-        <HStack justify="space-between">
-          <Text fontWeight="medium">Количество заказов:</Text>
-          <Input
-            value={orderCount}
-            onChange={handleOrderCountChange}
-            type="number"
-            width="80px"
-            textAlign="right"
-          />
-          <Text width="30px">шт.</Text>
-        </HStack>
-        <VStack align="stretch" spacing={2}>
-          <HStack justify="space-between">
-            <Text fontWeight="medium">Часы работы:</Text>
-            <HStack spacing={2}>
-              <Input
-                value={hoursWorked}
-                onChange={handleHoursChange}
-                type="number"
-                width="80px"
-                textAlign="right"
-              />
-              <Text width="30px">ч.</Text>
-            </HStack>
-          </HStack>
-          <HStack justify="flex-end" spacing={2}>
-            <Button size="sm" onClick={() => adjustHours(-12)}>-12</Button>
-            <Button size="sm" onClick={() => adjustHours(-1)}>-1</Button>
-            <Button size="sm" onClick={() => adjustHours(1)}>+1</Button>
-            <Button size="sm" onClick={() => adjustHours(12)}>+12</Button>
-          </HStack>
-        </VStack>
-        <HStack justify="space-between">
-          <Text fontWeight="medium">Цена за час работы:</Text>
-          <HStack spacing={2}>
-            <Input
-              value={pricePerHour}
-              onChange={handleHourlyRateChange}
-              type="number"
-              width="80px"
-              textAlign="right"
-            />
-            <Text width="50px">руб./ч</Text>
-          </HStack>
-        </HStack>
-        <Divider />
-        <VStack align="stretch" spacing={1}>
-          <Text fontWeight="bold" fontSize="xl">
-            Общий заработок:
-            {totalEarnings.toLocaleString()}
-            {' '}
-            руб.
-          </Text>
-          <Text fontSize="sm" color="gray.500">
-            (За заказы: {(orderCount * Number(pricePerOrder)).toLocaleString()} руб. + 
-            За часы: {(Number(hoursWorked) * Number(pricePerHour)).toLocaleString()} руб.)
-          </Text>
-        </VStack>
-      </VStack>
-    </Card>
+    <Accordion allowToggle>
+      <AccordionItem>
+        <h2>
+          <AccordionButton>
+            <Box flex="1" display="flex" flexDirection="row" alignItems="flex-start" justifyContent="space-between">
+              <Text fontWeight="bold" fontSize="sm">
+                Калькулятор з/п
+              </Text>
+              <Text fontSize="sm">
+                {totalEarnings.toLocaleString()}
+                {' '}
+                руб.
+              </Text>
+            </Box>
+            <AccordionIcon />
+          </AccordionButton>
+        </h2>
+        <AccordionPanel pb={4}>
+          <Box borderWidth={1} borderRadius="lg" borderColor="#4a2e2e4d" width="100%">
+            <VStack align="stretch" spacing={3}>
+              <SimpleGrid columns={2} spacing={3}>
+                <Text fontWeight="medium">Цена за заказ:</Text>
+                <HStack spacing={2} justifyContent="flex-end">
+                  <Input
+                    value={pricePerOrder}
+                    onChange={handlePriceChange}
+                    type="number"
+                    width="65px"
+                    textAlign="center"
+                  />
+                  <Text>руб.</Text>
+                </HStack>
+
+                <Text fontWeight="medium">Количество заказов:</Text>
+                <HStack spacing={2} justifyContent="flex-end">
+                  <Input
+                    value={orderCount}
+                    onChange={handleOrderCountChange}
+                    type="number"
+                    width="65px"
+                    textAlign="center"
+                  />
+                  <Text>шт.</Text>
+                </HStack>
+
+                <Text fontWeight="medium">Отработанные часы:</Text>
+                <HStack spacing={2} justifyContent="flex-end">
+                  <Input
+                    value={hoursWorked}
+                    onChange={handleHoursChange}
+                    type="number"
+                    width="65px"
+                    textAlign="center"
+                  />
+                  <Text>ч.</Text>
+                </HStack>
+
+                <Text fontWeight="medium">Час работы:</Text>
+                <HStack spacing={2} justifyContent="flex-end">
+                  <Input
+                    value={pricePerHour}
+                    onChange={handleHourlyRateChange}
+                    type="number"
+                    width="65px"
+                    textAlign="right"
+                  />
+                  <Text>руб./ч</Text>
+                </HStack>
+              </SimpleGrid>
+
+              <Divider />
+              <VStack align="stretch" spacing={1}>
+                <Text fontSize="sm" color="gray.500">
+                  (За заказы:
+                  {' '}
+                  {(orderCount * Number(pricePerOrder)).toLocaleString()}
+                  {' '}
+                  руб. +
+                  {' '}
+                  За часы:
+                  {(Number(hoursWorked) * Number(pricePerHour)).toLocaleString()}
+                  {' '}
+                  руб.)
+                </Text>
+              </VStack>
+            </VStack>
+          </Box>
+        </AccordionPanel>
+      </AccordionItem>
+    </Accordion>
   );
 }
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box, Heading, VStack, HStack, Text, Flex, Button, Card,
+  Box, Heading, VStack, HStack, Text, Flex, Button, Card, Center,
 } from '@chakra-ui/react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -26,8 +26,6 @@ function OrderStatistics() {
   });
   const [chartData, setChartData] = useState([]);
   const { archivedOrders } = useArchivedOrders();
-  const [currentPage, setCurrentPage] = useState(1);
-  const ordersPerPage = 50;
 
   const [filteredOrders, setFilteredOrders] = useState([]);
 
@@ -57,40 +55,50 @@ function OrderStatistics() {
     setChartData(newChartData);
   }, [archivedOrders, startDate, endDate]);
 
-  const indexOfLastOrder = currentPage * ordersPerPage;
-  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-  const paginatedOrders = filteredOrders.slice(indexOfFirstOrder, indexOfLastOrder);
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const datePickerCustomStyles = {
+    input: {
+      width: '110px',
+      fontSize: '14px',
+      padding: '4px 8px',
+      border: '1px solid #e2e8f0',
+      borderRadius: '4px',
+    },
+  };
 
   return (
     <Box p={5} pb={20}>
-      <Heading mb={5}>Статистика заказов</Heading>
+      <Heading mb={5} align="center">Статистика заказов</Heading>
       <VStack spacing={5} align="stretch">
-        <HStack>
-          <DatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            selectsStart
-            startDate={startDate}
-            endDate={endDate}
-            dateFormat="dd.MM.yyyy"
-            locale="ru"
-            placeholderText="Выберите начальную дату"
-          />
-          <DatePicker
-            selected={endDate}
-            onChange={(date) => setEndDate(date)}
-            selectsEnd
-            startDate={startDate}
-            endDate={endDate}
-            minDate={startDate}
-            dateFormat="dd.MM.yyyy"
-            locale="ru"
-            placeholderText="Выберите конечную дату"
-          />
-        </HStack>
-        <Card height="150px">
+        <Card p={3}>
+          <Center>
+            <HStack spacing={2}>
+              <DatePicker
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+                selectsStart
+                startDate={startDate}
+                endDate={endDate}
+                dateFormat="dd.MM.yyyy"
+                locale="ru"
+                placeholderText="Начало"
+                customInput={<input style={datePickerCustomStyles.input} />}
+              />
+              <DatePicker
+                selected={endDate}
+                onChange={(date) => setEndDate(date)}
+                selectsEnd
+                startDate={startDate}
+                endDate={endDate}
+                minDate={startDate}
+                dateFormat="dd.MM.yyyy"
+                locale="ru"
+                placeholderText="Конец"
+                customInput={<input style={datePickerCustomStyles.input} />}
+              />
+            </HStack>
+          </Center>
+        </Card>
+        <Box height="150px">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={chartData}
@@ -108,8 +116,8 @@ function OrderStatistics() {
               <Bar dataKey="orders" fill="#8884d8" />
             </BarChart>
           </ResponsiveContainer>
-        </Card>
-        <Card p={1}>
+        </Box>
+        <Box p={1}>
           <Flex justify="space-between">
             <Text fontWeight="bold">
               Всего заказов:
@@ -122,16 +130,9 @@ function OrderStatistics() {
               {(filteredOrders.length / chartData.length || 1).toFixed(0)}
             </Text>
           </Flex>
-        </Card>
+        </Box>
         <EarningsDisplay orders={filteredOrders} />
-        <OrderList orders={paginatedOrders} />
-        <HStack justifyContent="center" mt={4}>
-          {Array.from({ length: Math.ceil(filteredOrders.length / ordersPerPage) }, (_, i) => (
-            <Button key={i} onClick={() => paginate(i + 1)} colorScheme={currentPage === i + 1 ? "blue" : "gray"} size="sm">
-              {i + 1}
-            </Button>
-          ))}
-        </HStack>
+        <OrderList orders={filteredOrders} />
       </VStack>
     </Box>
   );
