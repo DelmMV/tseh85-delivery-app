@@ -87,20 +87,33 @@ function OpenOrder({
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Error updating order status:', error);
+      // Добавьте здесь обработку ошибок, например, показ уведомления
     }
   };
 
   const renderStatusButton = () => {
     if (Status === 5) {
       return (
-        <Button height="35px" variant="outline" onClick={handlePostOrder} isLoading={isSubmitting}>
+        <Button 
+          height="35px" 
+          variant="outline" 
+          onClick={handlePostOrder} 
+          isLoading={isSubmitting}
+          loadingText="Обработка..."
+        >
           Доставить
         </Button>
       );
     }
     if (Status === 6) {
       return (
-        <Button height="35px" variant="outline" onClick={handlePostOrderCheckout} isLoading={isSubmitting}>
+        <Button 
+          height="35px"
+          variant="outline"
+          onClick={handlePostOrderCheckout}
+          isLoading={isSubmitting}
+          loadingText="Обработка..."
+        >
           Доставлен
         </Button>
       );

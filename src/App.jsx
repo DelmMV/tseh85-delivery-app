@@ -15,7 +15,7 @@ import { MapComponent } from './pages/map';
 import { PageNotFound } from './pages/page-not-found';
 import ProtectedRoute from './router/ProtectedRoute';
 import { Order } from './pages/order';
-import { OrderStatistics } from './pages/OrderStatistics';
+import { OrderStatistics } from './pages/order-statistics';
 
 const queryClient = new QueryClient();
 function App() {

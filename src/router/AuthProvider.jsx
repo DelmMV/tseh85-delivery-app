@@ -24,18 +24,20 @@ export function AuthProvider({ children }) {
   }, []);
 
   const loginApp = async (login, password, token = null) => {
-    setIsLoading(true); // Начало загрузки
+    setIsLoading(true);
     try {
       if (token) {
         localStorage.setItem('token', token);
         setUser(token);
+        // Получаем и сохраняем настройки пользователя
+        await fetchAndSaveUserSettings(token);
         toast({
           title: 'Успешный вход в систему!',
           status: 'success',
           duration: 5000,
           isClosable: true,
         });
-        setIsLoading(false); // Завершение загрузки
+        setIsLoading(false);
         return { success: true };
       }
       const response = await fetch(
@@ -55,19 +57,21 @@ export function AuthProvider({ children }) {
           duration: 5000,
           isClosable: true,
         });
-        setIsLoading(false); // Завершение загрузки
+        setIsLoading(false);
         return { success: false, message: 'Неправильный логин или пароль' };
       }
       const authToken = response.headers.get('Token');
       localStorage.setItem('token', authToken);
       setUser(authToken);
+      // Получаем и сохраняем настройки пользователя
+      await fetchAndSaveUserSettings(authToken);
       toast({
         title: 'Успешный вход в систему!',
         status: 'success',
         duration: 5000,
         isClosable: true,
       });
-      setIsLoading(false); // Завершение загрузки
+      setIsLoading(false);
       return { success: true };
     } catch (error) {
       toast({
@@ -76,10 +80,31 @@ export function AuthProvider({ children }) {
         duration: 5000,
         isClosable: true,
       });
-      setIsLoading(false); // Завершение загрузки
+      setIsLoading(false);
       return { success: false, message: error.message };
     }
   };
+
+  // Функция для получения и сохранения настроек пользователя
+  const fetchAndSaveUserSettings = async (token) => {
+    try {
+      const response = await fetch('https://app.tseh85.com/Service/api/delivery/settings', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          token: token,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch user settings');
+      }
+      const settings = await response.json();
+      localStorage.setItem('settings', JSON.stringify(settings));
+    } catch (error) {
+      console.error('Error fetching user settings:', error);
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem('token');
     setUser(null);

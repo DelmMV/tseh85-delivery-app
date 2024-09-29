@@ -1,7 +1,7 @@
 function cleanLocalStorage(orders) {
   // Получаем имя текущего пользователя из настроек
   const currentUserName = JSON.parse(localStorage.getItem('settings'))?.Name;
-
+  console.log(currentUserName);
   // Фильтруем заказы, оставляя только те, которые принадлежат текущему пользователю
   const userOrders = orders.filter((order) => order.CheckoutUserName === currentUserName);
 
