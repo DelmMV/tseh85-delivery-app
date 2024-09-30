@@ -64,7 +64,7 @@ function EarningsDisplay({ orders }) {
           </AccordionButton>
         </h2>
         <AccordionPanel pb={4}>
-          <Box borderWidth={1} borderRadius="lg" borderColor="#4a2e2e4d" width="100%">
+          <Box width="100%">
             <VStack align="stretch" spacing={3}>
               <SimpleGrid columns={2} spacing={3}>
                 <Text fontWeight="medium">Цена за заказ:</Text>
