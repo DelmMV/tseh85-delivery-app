@@ -7,17 +7,17 @@ import {
 
 function EarningsDisplay({ orders }) {
   const [pricePerOrder, setPricePerOrder] = useState(() => localStorage.getItem('pricePerOrder') || '200');
-  const [orderCount, setOrderCount] = useState(orders.length);
+  const [orderCount, setOrderCount] = useState(orders.length.toString());
   const [hoursWorked, setHoursWorked] = useState(() => localStorage.getItem('hoursWorked') || '0');
   const [pricePerHour, setPricePerHour] = useState(() => localStorage.getItem('pricePerHour') || '0');
   const [totalEarnings, setTotalEarnings] = useState(0);
 
   useEffect(() => {
-    setOrderCount(orders.length);
+    setOrderCount(orders.length.toString());
   }, [orders]);
 
   useEffect(() => {
-    const orderEarnings = orderCount * Number(pricePerOrder);
+    const orderEarnings = (Number(orderCount) || 0) * Number(pricePerOrder);
     const hourlyEarnings = Number(hoursWorked) * Number(pricePerHour);
     const total = orderEarnings + hourlyEarnings;
     setTotalEarnings(total);
@@ -30,7 +30,7 @@ function EarningsDisplay({ orders }) {
   };
 
   const handleOrderCountChange = (e) => {
-    setOrderCount(Number(e.target.value));
+    setOrderCount(e.target.value);
   };
 
   const handleHoursChange = (e) => {

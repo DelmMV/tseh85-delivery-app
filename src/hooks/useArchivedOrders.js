@@ -4,12 +4,15 @@ export function useArchivedOrders() {
   const [archivedOrders, setArchivedOrders] = useState([]);
 
   useEffect(() => {
+    const currentUserName = JSON.parse(localStorage.getItem('settings'))?.Name;
     const storedOrders = JSON.parse(localStorage.getItem('archivedOrders') || '[]');
-    setArchivedOrders(storedOrders);
+    const userArchivedOrders = storedOrders.filter((order) => order.CheckoutUserName === currentUserName);
+    setArchivedOrders(userArchivedOrders);
   }, []);
 
   const updateArchive = useCallback((currentOrders) => {
-    const completedOrders = currentOrders.filter((order) => order.Status === 7);
+    const currentUserName = JSON.parse(localStorage.getItem('settings'))?.Name;
+    const completedOrders = currentOrders.filter((order) => order.Status === 7 && order.CheckoutUserName === currentUserName);
 
     setArchivedOrders((prevArchivedOrders) => {
       const updatedArchivedOrders = [...prevArchivedOrders];
