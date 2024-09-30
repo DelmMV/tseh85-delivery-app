@@ -2,10 +2,9 @@ import { useState, useEffect, useCallback } from 'react';
 
 export function useArchivedOrders() {
   const [archivedOrders, setArchivedOrders] = useState([]);
-
+  const currentUserName = JSON.parse(localStorage.getItem('settings'))?.Name;
+  const storedOrders = JSON.parse(localStorage.getItem('archivedOrders') || '[]');
   useEffect(() => {
-    const currentUserName = JSON.parse(localStorage.getItem('settings'))?.Name;
-    const storedOrders = JSON.parse(localStorage.getItem('archivedOrders') || '[]');
     const userArchivedOrders = storedOrders.filter((order) => order.CheckoutUserName === currentUserName);
     setArchivedOrders(userArchivedOrders);
   }, []);
