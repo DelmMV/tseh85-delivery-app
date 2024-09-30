@@ -1,4 +1,9 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+} from 'react';
 
 export function useArchivedOrders() {
   const [allArchivedOrders, setAllArchivedOrders] = useState([]);
@@ -27,9 +32,7 @@ export function useArchivedOrders() {
     });
   }, [currentUserName]);
 
-  const archivedOrders = useMemo(() => {
-    return allArchivedOrders.filter(order => order.CheckoutUserName === currentUserName);
-  }, [allArchivedOrders, currentUserName]);
+  const archivedOrders = useMemo(() => allArchivedOrders.filter((order) => order.CheckoutUserName === currentUserName), [allArchivedOrders, currentUserName]);
 
   return { archivedOrders, updateArchive };
 }

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Card, Text, Input, VStack, HStack, Divider, Button,
+  Text, Input, VStack, HStack, Divider,
   Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Box,
-  SimpleGrid
+  SimpleGrid,
 } from '@chakra-ui/react';
 
 function EarningsDisplay({ orders }) {
