@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box, Heading, VStack, HStack, Text, Flex, Button, Card, Center,
+  Box, Heading, VStack, HStack, Text, Flex, Card, Center,
 } from '@chakra-ui/react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
