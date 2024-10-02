@@ -37,7 +37,9 @@ function OrderList({ orders }) {
                 <Flex flex="1" justifyContent="space-between" alignItems="center">
                   <Text>{date}</Text>
                   <Badge colorScheme="green" borderRadius="full" px={2}>
-                    {dateOrders.length} заказов
+                    {dateOrders.length}
+                    {' '}
+                    заказов
                   </Badge>
                 </Flex>
                 <AccordionIcon />
@@ -56,7 +58,8 @@ function OrderList({ orders }) {
                     borderColor="4a2e2e4d"
                   >
                     <Text fontWeight="bold" fontSize="smaller">
-                      №{order.DeliveryNumber}
+                      №
+                      {order.DeliveryNumber}
                     </Text>
                     <Text fontSize="smaller">
                       {convertTimestamp(order.DateComplete, 'HH:mm')}
