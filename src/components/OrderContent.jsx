@@ -32,18 +32,25 @@ function OrderContent({ getOrder, selectedItems, handleCheckboxChange }) {
                       onChange={() => handleCheckboxChange(product.RowId)}
                       paddingRight="5px"
                     />
-                    <Image
-                      marginRight="6px"
-                      borderRadius="10px"
-                      borderWidth="0"
-                      boxShadow="md"
-                      width="45px"
-                      height="45px"
-                      src={product.PictureId ? `https://app.tseh85.com/Service/api/image?PictureId=${product.PictureId}` : plugImg}
-                      alt={product.ProductName}
-                    />
-                    <Box display="flex" flexDir="column">
-                      <Text fontSize="md" fontWeight="bold" width="220px">{product.ProductName}</Text>
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      cursor="pointer"
+                      onClick={() => handleCheckboxChange(product.RowId)}
+                    >
+                      <Image
+                        marginRight="6px"
+                        borderRadius="10px"
+                        borderWidth="0"
+                        boxShadow="md"
+                        width="45px"
+                        height="45px"
+                        src={product.PictureId ? `https://app.tseh85.com/Service/api/image?PictureId=${product.PictureId}` : plugImg}
+                        alt={product.ProductName}
+                      />
+                      <Box display="flex" flexDir="column">
+                        <Text fontSize="md" fontWeight="bold" width="220px">{product.ProductName}</Text>
+                      </Box>
                     </Box>
                   </Box>
                   <Box display="flex" alignItems="center" flexDir="column">
