@@ -5,8 +5,8 @@ import {
 } from '@chakra-ui/react';
 import { TimeIcon } from '@chakra-ui/icons';
 
-import { OrderCard } from './OrderCard';
 import { convertTimestamp } from '../utils/convertTimestamp';
+import { OrderModal } from './OrderModal';
 
 function OrderList({ orders }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -84,7 +84,7 @@ function OrderList({ orders }) {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {selectedOrder && <OrderCard order={selectedOrder} />}
+            {selectedOrder && <OrderModal order={selectedOrder} />}
           </ModalBody>
         </ModalContent>
       </Modal>
