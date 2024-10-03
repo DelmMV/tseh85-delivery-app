@@ -11,6 +11,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Badge,
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { BsTelephone } from 'react-icons/bs';
@@ -128,7 +129,13 @@ function OrderCard({ order }) {
                 {convertTimestamp(WishingDate, 'HH:mm')}
               </Text>
             </Box>
-            <Text fontSize="sm">{Nearest && 'Ближайшее'}</Text>
+            <Text fontSize="sm">
+              {Nearest && (
+              <Badge ml="1" fontSize="0.8em" colorScheme="green">
+                Ближайшее
+              </Badge>
+              )}
+            </Text>
             <Text fontSize="md" display="flex" flexDirection="row" alignItems="center" fontWeight="bold">
               <BsTelephone padding="0" margin="5px" />
               <a href={`tel:+${ClientPhone}`}>
