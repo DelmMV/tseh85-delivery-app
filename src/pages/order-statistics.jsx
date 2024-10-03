@@ -71,6 +71,7 @@ function OrderStatistics() {
       <VStack spacing={5} align="stretch">
         <Card p={3}>
           <Center>
+            <Text marginRight={2}>C</Text>
             <HStack spacing={2}>
               <DatePicker
                 selected={startDate}
@@ -83,6 +84,7 @@ function OrderStatistics() {
                 placeholderText="Начало"
                 customInput={<input style={datePickerCustomStyles.input} />}
               />
+              <Text marginRight={2}>до</Text>
               <DatePicker
                 selected={endDate}
                 onChange={(date) => setEndDate(date)}
