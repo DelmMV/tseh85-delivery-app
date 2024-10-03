@@ -159,7 +159,7 @@ function Order() {
             <Box>
               {isAllSelected && <Button width="60px" height="20px" fontSize="sm" fontWeight="extrabold" variant="outline" colorScheme="green">Готово</Button>}
             </Box>
-            <Box display="flex" flexDir="row">
+            <Box display="flex" flexDir="row" marginTop="7px">
               <Text>Всего&#160;</Text>
               <Text fontWeight="bold">{QuantityPurchases}</Text>
               <Text>&#160;позиций, на сумму&#160;</Text>

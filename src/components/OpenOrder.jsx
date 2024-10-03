@@ -168,7 +168,7 @@ function OpenOrder({
                 </Button>
               )}
             </Box>
-            <Box display="flex" flexDir="row" alignItems="center" justifyContent="center">
+            <Box display="flex" flexDir="row" alignItems="center" justifyContent="center" padding="5px">
               <Text>Всего&#160;</Text>
               <Text fontWeight="bold">{QuantityPurchases}</Text>
               <Text>&#160;позиций, на сумму&#160;</Text>

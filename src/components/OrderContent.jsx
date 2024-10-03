@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import {
-  Box, Checkbox, Image, Text, Stack, Divider,
+  Box, Checkbox, Image, Text, Stack, Divider, Badge,
 } from '@chakra-ui/react';
 import plugImg from '../assets/image/logo-t85.jpeg';
 
@@ -17,11 +17,12 @@ function OrderContent({ getOrder, selectedItems, handleCheckboxChange }) {
   }, [getOrder]);
 
   return (
-    <Stack spacing={1}>
+    <Stack spacing={0}>
       {Object.entries(groupedProducts).map(([catalogName, products]) => (
         <Box key={catalogName}>
-          <Text fontSize="md" fontWeight="bold" color="gray.500">{catalogName}</Text>
-          <Stack spacing={2}>
+          <Badge colorScheme="green" fontSize="md" fontWeight="bold" borderRadius="10px">{catalogName}</Badge>
+
+          <Stack spacing={0}>
             {products.map((product) => (
               <React.Fragment key={product.RowId}>
                 <Box display="flex" justifyContent="space-between" alignItems="center" flexDir="row" height="70px">
@@ -59,7 +60,7 @@ function OrderContent({ getOrder, selectedItems, handleCheckboxChange }) {
                   </Box>
                 </Box>
                 {product.Products && product.Products.length > 0 && (
-                  <Stack pl="40px" spacing={1}>
+                  <Stack pl="40px">
                     {product.Products.map((nestedProduct) => (
                       <Box key={nestedProduct.RowId} display="flex" justifyContent="space-between" alignItems="center" flexDir="row" height="25px">
                         <Box display="flex" alignItems="center">
@@ -83,7 +84,7 @@ function OrderContent({ getOrder, selectedItems, handleCheckboxChange }) {
               </React.Fragment>
             ))}
           </Stack>
-          <Divider mt={2} mb={2} />
+          <Divider />
         </Box>
       ))}
     </Stack>
