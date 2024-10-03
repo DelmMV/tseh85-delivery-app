@@ -3,12 +3,14 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { Box } from '@chakra-ui/react';
 import { NavBar } from './NavBar';
 import { NavBottom } from './NavBottom';
+import { RefreshProgressBar } from './RefreshProgressBar';
 
 function Layout() {
   const location = useLocation();
 
   return (
     <>
+      <RefreshProgressBar />
       <Box
         minWidth="360px"
         position="fixed"
@@ -19,7 +21,7 @@ function Layout() {
       >
         <NavBar />
       </Box>
-      <Box minWidth="360px">
+      <Box minWidth="360px" paddingTop="4px">
         <Outlet />
       </Box>
       <Box
