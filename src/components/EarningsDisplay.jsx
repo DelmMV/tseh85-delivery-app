@@ -95,6 +95,26 @@ function EarningsDisplay({ orders }) {
                 </Tr>
                 <Tr>
                   <Td>
+                    Час работы -
+                    {' '}
+                    <Text as="span" color="gray.500">
+                      Руб./ч.
+                    </Text>
+                  </Td>
+                  <Td isNumeric>
+                    <HStack spacing={2} justifyContent="flex-end">
+                      <Input
+                        value={pricePerHour}
+                        onChange={handleHourlyRateChange}
+                        type="number"
+                        width="65px"
+                        textAlign="right"
+                      />
+                    </HStack>
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td>
                     Количество заказов -
                     {' '}
                     <Text as="span" color="gray.500">
@@ -129,26 +149,6 @@ function EarningsDisplay({ orders }) {
                         type="number"
                         width="65px"
                         textAlign="center"
-                      />
-                    </HStack>
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td>
-                    Час работы -
-                    {' '}
-                    <Text as="span" color="gray.500">
-                      Руб./ч.
-                    </Text>
-                  </Td>
-                  <Td isNumeric>
-                    <HStack spacing={2} justifyContent="flex-end">
-                      <Input
-                        value={pricePerHour}
-                        onChange={handleHourlyRateChange}
-                        type="number"
-                        width="65px"
-                        textAlign="right"
                       />
                     </HStack>
                   </Td>
