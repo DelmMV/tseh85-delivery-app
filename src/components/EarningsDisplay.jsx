@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Text, Input, VStack, HStack, Divider,
+  Text, Input, VStack, HStack,
   Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Box,
-  SimpleGrid,
+  Table, Thead, Tbody, Tr, Th, Td, TableContainer,
 } from '@chakra-ui/react';
 
 function EarningsDisplay({ orders }) {
@@ -64,75 +64,92 @@ function EarningsDisplay({ orders }) {
           </AccordionButton>
         </h2>
         <AccordionPanel pb={4}>
-          <Box width="100%">
-            <VStack align="stretch" spacing={3}>
-              <SimpleGrid columns={2} spacing={3}>
-                <Text fontWeight="medium">Цена за заказ:</Text>
-                <HStack spacing={2} justifyContent="flex-end">
-                  <Input
-                    value={pricePerOrder}
-                    onChange={handlePriceChange}
-                    type="number"
-                    width="65px"
-                    textAlign="center"
-                  />
-                  <Text>руб.</Text>
-                </HStack>
-
-                <Text fontWeight="medium">Количество заказов:</Text>
-                <HStack spacing={2} justifyContent="flex-end">
-                  <Input
-                    value={orderCount}
-                    onChange={handleOrderCountChange}
-                    type="number"
-                    width="65px"
-                    textAlign="center"
-                  />
-                  <Text>шт.</Text>
-                </HStack>
-
-                <Text fontWeight="medium">Отработанные часы:</Text>
-                <HStack spacing={2} justifyContent="flex-end">
-                  <Input
-                    value={hoursWorked}
-                    onChange={handleHoursChange}
-                    type="number"
-                    width="65px"
-                    textAlign="center"
-                  />
-                  <Text>ч.</Text>
-                </HStack>
-
-                <Text fontWeight="medium">Час работы:</Text>
-                <HStack spacing={2} justifyContent="flex-end">
-                  <Input
-                    value={pricePerHour}
-                    onChange={handleHourlyRateChange}
-                    type="number"
-                    width="65px"
-                    textAlign="right"
-                  />
-                  <Text>руб./ч</Text>
-                </HStack>
-              </SimpleGrid>
-
-              <Divider />
-              <VStack align="stretch" spacing={1}>
-                <Text fontSize="sm" color="gray.500">
-                  (За заказы:
-                  {' '}
-                  {(orderCount * Number(pricePerOrder)).toLocaleString()}
-                  {' '}
-                  руб. +
-                  {' '}
-                  За часы:
-                  {(Number(hoursWorked) * Number(pricePerHour)).toLocaleString()}
-                  {' '}
-                  руб.)
-                </Text>
-              </VStack>
-            </VStack>
-          </Box>
+          <TableContainer>
+            <Table variant="simple" size="sm">
+              <Thead>
+                <Tr>
+                  <Th>Параметр</Th>
+                  <Th>Ед. изм.</Th>
+                  <Th isNumeric>Значение</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                <Tr>
+                  <Td>Цена за заказ</Td>
+                  <Td color="gray.500">Руб.</Td>
+                  <Td isNumeric>
+                    <HStack spacing={2} justifyContent="flex-end">
+                      <Input
+                        value={pricePerOrder}
+                        onChange={handlePriceChange}
+                        type="number"
+                        width="65px"
+                        textAlign="center"
+                      />
+                    </HStack>
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td>Количество заказов</Td>
+                  <Td color="gray.500">Шт.</Td>
+                  <Td isNumeric>
+                    <HStack spacing={2} justifyContent="flex-end">
+                      <Input
+                        value={orderCount}
+                        onChange={handleOrderCountChange}
+                        type="number"
+                        width="65px"
+                        textAlign="center"
+                      />
+                    </HStack>
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td>Отработанные часы</Td>
+                  <Td color="gray.500">Часы</Td>
+                  <Td isNumeric>
+                    <HStack spacing={2} justifyContent="flex-end">
+                      <Input
+                        value={hoursWorked}
+                        onChange={handleHoursChange}
+                        type="number"
+                        width="65px"
+                        textAlign="center"
+                      />
+                    </HStack>
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td>Час работы</Td>
+                  <Td color="gray.500">Руб./ч</Td>
+                  <Td isNumeric>
+                    <HStack spacing={2} justifyContent="flex-end">
+                      <Input
+                        value={pricePerHour}
+                        onChange={handleHourlyRateChange}
+                        type="number"
+                        width="65px"
+                        textAlign="right"
+                      />
+                    </HStack>
+                  </Td>
+                </Tr>
+              </Tbody>
+            </Table>
+          </TableContainer>
+          <VStack align="stretch" spacing={1} mt={4}>
+            <Text fontSize="sm" color="gray.500">
+              (За заказы:
+              {' '}
+              {(orderCount * Number(pricePerOrder)).toLocaleString()}
+              {' '}
+              руб. +
+              За часы:
+              {(Number(hoursWorked) * Number(pricePerHour)).toLocaleString()}
+              {' '}
+              руб.)
+            </Text>
+          </VStack>
         </AccordionPanel>
       </AccordionItem>
     </Accordion>

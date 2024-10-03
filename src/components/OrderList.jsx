@@ -63,7 +63,7 @@ function OrderList({ orders }) {
                       №
                       {order.DeliveryNumber}
                     </Text>
-                    <Text fontSize="smaller" align="center">
+                    <Text fontSize="smaller" display="flex" alignItems="center" justifyContent="center">
                       <TimeIcon boxSize={3} marginRight={1} />
                       {convertTimestamp(order.DateComplete, 'HH:mm')}
                     </Text>
