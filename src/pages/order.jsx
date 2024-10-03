@@ -188,7 +188,7 @@ function Order() {
               <Tr>
                 <Td>Телефон:</Td>
                 <Td fontWeight="bold">
-                  <a href={`tel:${ClientPhone}`}>
+                  <a href={`tel:+${ClientPhone}`}>
                     +
                     {ClientPhone}
                   </a>
