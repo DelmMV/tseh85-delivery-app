@@ -69,14 +69,18 @@ function EarningsDisplay({ orders }) {
               <Thead>
                 <Tr>
                   <Th>Параметр</Th>
-                  <Th>Ед. изм.</Th>
                   <Th isNumeric>Значение</Th>
                 </Tr>
               </Thead>
               <Tbody>
                 <Tr>
-                  <Td>Цена за заказ</Td>
-                  <Td color="gray.500">Руб.</Td>
+                  <Td>
+                    Цена за заказ -
+                    {' '}
+                    <Text as="span" color="gray.500">
+                      Руб.
+                    </Text>
+                  </Td>
                   <Td isNumeric>
                     <HStack spacing={2} justifyContent="flex-end">
                       <Input
@@ -90,8 +94,13 @@ function EarningsDisplay({ orders }) {
                   </Td>
                 </Tr>
                 <Tr>
-                  <Td>Количество заказов</Td>
-                  <Td color="gray.500">Шт.</Td>
+                  <Td>
+                    Количество заказов -
+                    {' '}
+                    <Text as="span" color="gray.500">
+                      Шт.
+                    </Text>
+                  </Td>
                   <Td isNumeric>
                     <HStack spacing={2} justifyContent="flex-end">
                       <Input
@@ -105,8 +114,13 @@ function EarningsDisplay({ orders }) {
                   </Td>
                 </Tr>
                 <Tr>
-                  <Td>Отработанные часы</Td>
-                  <Td color="gray.500">Часы</Td>
+                  <Td>
+                    Отработанные часы -
+                    {' '}
+                    <Text as="span" color="gray.500">
+                      Часы
+                    </Text>
+                  </Td>
                   <Td isNumeric>
                     <HStack spacing={2} justifyContent="flex-end">
                       <Input
@@ -120,8 +134,13 @@ function EarningsDisplay({ orders }) {
                   </Td>
                 </Tr>
                 <Tr>
-                  <Td>Час работы</Td>
-                  <Td color="gray.500">Руб./ч</Td>
+                  <Td>
+                    Час работы -
+                    {' '}
+                    <Text as="span" color="gray.500">
+                      Руб./ч.
+                    </Text>
+                  </Td>
                   <Td isNumeric>
                     <HStack spacing={2} justifyContent="flex-end">
                       <Input

@@ -115,7 +115,7 @@ function OrderStatistics() {
               <XAxis dataKey="date" />
               <YAxis />
               <Tooltip />
-              <Bar dataKey="orders" fill="#8884d8" />
+              <Bar dataKey="orders" fill="#8baf3f" name="Заказы" />
             </BarChart>
           </ResponsiveContainer>
         </Box>

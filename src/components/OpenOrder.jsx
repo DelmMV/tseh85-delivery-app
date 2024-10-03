@@ -94,10 +94,10 @@ function OpenOrder({
   const renderStatusButton = () => {
     if (Status === 5) {
       return (
-        <Button 
-          height="35px" 
-          variant="outline" 
-          onClick={handlePostOrder} 
+        <Button
+          height="35px"
+          variant="outline"
+          onClick={handlePostOrder}
           isLoading={isSubmitting}
           loadingText="Обработка..."
         >
@@ -107,7 +107,7 @@ function OpenOrder({
     }
     if (Status === 6) {
       return (
-        <Button 
+        <Button
           height="35px"
           variant="outline"
           onClick={handlePostOrderCheckout}
