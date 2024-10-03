@@ -3,6 +3,8 @@ import {
   SimpleGrid, Text, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, useDisclosure, Card,
   Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Flex, Badge,
 } from '@chakra-ui/react';
+import { TimeIcon } from '@chakra-ui/icons';
+
 import { OrderCard } from './OrderCard';
 import { convertTimestamp } from '../utils/convertTimestamp';
 
@@ -57,11 +59,12 @@ function OrderList({ orders }) {
                     onClick={() => handleOrderClick(order)}
                     borderColor="4a2e2e4d"
                   >
-                    <Text fontWeight="bold" fontSize="smaller">
+                    <Text fontWeight="bold" fontSize="smaller" align="center">
                       №
                       {order.DeliveryNumber}
                     </Text>
-                    <Text fontSize="smaller">
+                    <Text fontSize="smaller" align="center">
+                      <TimeIcon boxSize={3} marginRight={1} />
                       {convertTimestamp(order.DateComplete, 'HH:mm')}
                     </Text>
                   </Card>
