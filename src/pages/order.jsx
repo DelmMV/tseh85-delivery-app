@@ -157,11 +157,11 @@ function Order() {
         )}
         <Box>
           {renderContent()}
-          <Box display="flex" flexDir="row" alignItems="center" justifyContent="space-between" mt="2px">
+          <Box display="flex" flexDir="row" alignItems="center" justifyContent="space-between" mt="5px">
             <Box display="flex" flexDir="row">
               <Text fontSize="smaller">Всего&#160;</Text>
               <Text fontWeight="bold" fontSize="smaller">{QuantityPurchases}</Text>
-              <Text fontSize="smaller" fontWeight="bold">&#160;позиций, на сумму&#160;</Text>
+              <Text fontSize="smaller">&#160;позиций, на сумму&#160;</Text>
               <Text fontWeight="bold" fontSize="smaller">
                 {Price}
                 Р.
