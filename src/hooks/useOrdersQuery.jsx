@@ -1,6 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 
 const createAuthorizationError = (message, status) => {
   const error = new Error(message);
@@ -13,7 +12,6 @@ export function useOrdersQuery() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const abortController = new AbortController();
-  const [timeUntilNextRefetch, setTimeUntilNextRefetch] = useState(30000);
 
   const acesToken = localStorage.getItem('token');
 
@@ -38,23 +36,19 @@ export function useOrdersQuery() {
     return response.json();
   };
 
-  return {
-    ...useQuery({
-      queryKey: ['orders'],
-      queryFn: fetchOrders,
-      enabled: !!acesToken,
-      staleTime: 5 * 60 * 1000,
-      cacheTime: 30 * 60 * 1000,
-      retry: 1,
-      retryDelay: 1000,
-      refetchInterval: 30000,
-      refetchIntervalInBackground: true,
-      onSuccess: () => {
-        queryClient.invalidateQueries('orders');
-        setTimeUntilNextRefetch(30000);
-      },
-      onSettled: () => abortController.abort(),
-    }),
-    timeUntilNextRefetch,
-  };
+  return useQuery({
+    queryKey: ['orders'],
+    queryFn: fetchOrders,
+    enabled: !!acesToken,
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 30 * 60 * 1000,
+    retry: 1,
+    retryDelay: 1000,
+    refetchInterval: 30000,
+    refetchIntervalInBackground: true,
+    onSuccess: () => {
+      queryClient.invalidateQueries('orders');
+    },
+    onSettled: () => abortController.abort(),
+  });
 }
