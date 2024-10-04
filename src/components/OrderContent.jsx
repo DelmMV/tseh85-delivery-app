@@ -80,8 +80,8 @@ function OrderContent({ getOrder, selectedItems, handleCheckboxChange }) {
                             alt={nestedProduct.ProductName}
                           />
                           <Box display="flex" flexDir="row">
-                            <Text marginRight="5px" fontSize="13" fontStyle="italic" fontWeight="extrabold" color="#8b00ff">{nestedProduct.ProductName}</Text>
-                            <Text fontSize="13" color="#8b00ff">{nestedProduct.Quantity}</Text>
+                            <Text marginRight="5px" fontSize="13" fontStyle="italic" fontWeight="extrabold" color="gray.400">{nestedProduct.ProductName}</Text>
+                            <Text fontSize="13" color="gray.400">{nestedProduct.Quantity}</Text>
                           </Box>
                         </Box>
                       </Box>
@@ -91,7 +91,7 @@ function OrderContent({ getOrder, selectedItems, handleCheckboxChange }) {
               </React.Fragment>
             ))}
           </Stack>
-          <Divider mb="5px" />
+          <Divider mb="5px" mt="5px" />
         </Box>
       ))}
     </Stack>
