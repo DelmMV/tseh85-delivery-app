@@ -101,6 +101,7 @@ export function AuthProvider({ children }) {
       const settings = await response.json();
       localStorage.setItem('settings', JSON.stringify(settings));
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error fetching user settings:', error);
     }
   };

@@ -17,6 +17,7 @@ import { status } from '../utils/status';
 import { convertTimestamp } from '../utils/convertTimestamp';
 import { useMapType } from '../contexts/MapTypeContext';
 import { createMapLink } from '../utils/createMapLink';
+import DeliveryButton from '../components/DeliveryButton';
 
 function Order() {
   const { OrderId } = useParams();
@@ -42,7 +43,6 @@ function Order() {
     });
   }, [OrderId]);
 
-  const isAllSelected = getOrder && getOrder.every((item) => selectedItems[item.RowId]);
   const navigate = useNavigate(); // Используем useNavigate для программной навигации
   const goBack = () => navigate(-1);
 
@@ -140,10 +140,12 @@ function Order() {
           <Button onClick={goBack}>
             <ArrowBackIcon />
           </Button>
-          <Text fontWeight="bold" color={status(Status).color}>
-            №
-            {DeliveryNumber}
-          </Text>
+          <Box display="flex" flexDir="column" alignItems="center">
+            <Text fontWeight="bold" color={status(Status).color}>
+              №
+              {DeliveryNumber}
+            </Text>
+          </Box>
           <DrawerPanel />
         </Box>
         {Wishes && RenderTextWishes(Wishes)}
@@ -156,9 +158,6 @@ function Order() {
         <Box>
           {renderContent()}
           <Box display="flex" flexDir="row" alignItems="center" justifyContent="space-between">
-            <Box>
-              {isAllSelected && <Button width="60px" height="20px" fontSize="sm" fontWeight="extrabold" variant="outline" colorScheme="green">Готово</Button>}
-            </Box>
             <Box display="flex" flexDir="row" marginTop="7px">
               <Text>Всего&#160;</Text>
               <Text fontWeight="bold">{QuantityPurchases}</Text>
@@ -168,6 +167,10 @@ function Order() {
                 Р.
               </Text>
             </Box>
+            <DeliveryButton
+              Status={Status}
+              OrderId={OrderId}
+            />
           </Box>
         </Box>
         <TableContainer borderWidth="1px" borderRadius="5px" boxShadow="lg">
@@ -211,7 +214,7 @@ function Order() {
               </Tr>
               {DispecherComment && (
                 <Tr>
-                  <Td>Комментарий диспечера:</Td>
+                  <Td>Комментарий диспетчера:</Td>
                   <Td whiteSpace="pre-wrap" fontWeight="bold">{DispecherComment}</Td>
                 </Tr>
               )}
