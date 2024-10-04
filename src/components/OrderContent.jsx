@@ -91,7 +91,7 @@ function OrderContent({ getOrder, selectedItems, handleCheckboxChange }) {
               </React.Fragment>
             ))}
           </Stack>
-          <Divider />
+          <Divider mb="5px" />
         </Box>
       ))}
     </Stack>
