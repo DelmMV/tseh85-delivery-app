@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const createAuthorizationError = (message, status) => {
   const error = new Error(message);
@@ -37,21 +37,6 @@ export function useOrdersQuery() {
     }
     return response.json();
   };
-
-  useEffect(() => {
-    const updateTime = () => {
-      setTimeUntilNextRefetch((prevTime) => {
-        if (prevTime <= 100) {
-          return 30000;
-        }
-        return prevTime - 100;
-      });
-    };
-
-    const intervalId = setInterval(updateTime, 100);
-
-    return () => clearInterval(intervalId);
-  }, []);
 
   return {
     ...useQuery({
