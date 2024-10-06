@@ -65,7 +65,7 @@ function OrderList({ orders }) {
                     </Text>
                     <Text fontSize="smaller" display="flex" alignItems="center" justifyContent="center">
                       <TimeIcon boxSize={3} marginRight={1} />
-                      {convertTimestamp(order.DateComplete, 'HH:mm')}
+                      {convertTimestamp(order.WishingDate, 'HH:mm')}
                     </Text>
                   </Card>
                 ))}
