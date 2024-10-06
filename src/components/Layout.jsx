@@ -10,12 +10,10 @@ function Layout() {
   return (
     <>
       <Box
-        minWidth="360px"
         position="fixed"
         width="100%"
         zIndex={1}
-        display={location.pathname === '/statistics' ? 'none' : 'flex'}
-        justifyContent="center"
+        display={location.pathname === '/statistics' ? 'none' : 'block'}
       >
         <NavBar />
       </Box>

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useArchivedOrders } from './useArchivedOrders';
 import { useToast } from '@chakra-ui/react';
+import { useArchivedOrders } from './useArchivedOrders';
 
 export const useSubmitOrder = () => {
   const queryClient = useQueryClient();
@@ -37,7 +37,8 @@ export const useSubmitOrder = () => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });
       if (variables.Status === 7) {
         const currentOrders = queryClient.getQueryData(['orders']) || [];
-        updateArchive([...currentOrders, { ...variables, Status: 7 }]);
+        const updatedOrder = { ...currentOrders.find((order) => order.OrderID === variables.OrderID), ...variables };
+        updateArchive([...currentOrders, updatedOrder]);
       }
       toast({
         title: 'Заказ обновлен',

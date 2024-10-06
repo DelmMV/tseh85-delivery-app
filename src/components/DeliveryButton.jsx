@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button, useDisclosure } from '@chakra-ui/react';
 import { useSubmitOrder } from '../hooks/useSubmitOrder';
 import ConfirmationModal from './ConfirmationModal';
@@ -7,6 +8,7 @@ function DeliveryButton({ Status, OrderId }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { mutate: submitOrder, isLoading: isSubmitting } = useSubmitOrder();
   const [currentAction, setCurrentAction] = React.useState(null);
+  const navigate = useNavigate();
 
   const handlePostOrder = () => {
     setCurrentAction('confirm');
@@ -36,6 +38,7 @@ function DeliveryButton({ Status, OrderId }) {
           Comment: '',
           WishingDate: null,
         });
+        navigate('/');
       }
       onClose();
     } catch (error) {

@@ -34,7 +34,7 @@ function NavBar() {
         padding="15px"
         boxShadow="lg"
       >
-        <Box display="flex" flexDir="row-reverse" alignItems="start" justifyContent="space-between">
+        <Box display="flex" flexDir="row-reverse" alignItems="start" justifyContent="space-evenly">
           <DrawerPanel />
           <Box margin="0 5px 0 5px" display="flex" flexDir="row">
             <SelectorFilter />
