@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, {
+  createContext, useContext, useState, useMemo,
+} from 'react';
 
 const MapTypeContext = createContext();
 
@@ -12,8 +14,10 @@ export function MapTypeProvider({ children }) {
     localStorage.setItem('mapType', type);
   };
 
+  const value = useMemo(() => ({ mapType, changeMapType }), [mapType]);
+
   return (
-    <MapTypeContext.Provider value={{ mapType, changeMapType }}>
+    <MapTypeContext.Provider value={value}>
       {children}
     </MapTypeContext.Provider>
   );
