@@ -1,61 +1,58 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button, useDisclosure } from '@chakra-ui/react';
+import React, { useState, useCallback } from 'react';
+import { Button, useDisclosure, useToast } from '@chakra-ui/react';
 import { useSubmitOrder } from '../hooks/useSubmitOrder';
 import ConfirmationModal from './ConfirmationModal';
 
 function DeliveryButton({ Status, OrderId }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { mutate: submitOrder, isLoading: isSubmitting } = useSubmitOrder();
-  const [currentAction, setCurrentAction] = React.useState(null);
-  const navigate = useNavigate();
-
-  const handlePostOrder = () => {
+  const { mutateAsync: submitOrder } = useSubmitOrder();
+  const [currentAction, setCurrentAction] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const toast = useToast();
+  const handlePostOrder = useCallback(() => {
     setCurrentAction('confirm');
     onOpen();
-  };
+  }, [onOpen]);
 
-  const handlePostOrderCheckout = () => {
+  const handlePostOrderCheckout = useCallback(() => {
     setCurrentAction('checkout');
     onOpen();
-  };
+  }, [onOpen]);
 
-  const handleConfirm = async () => {
-    try {
-      if (currentAction === 'confirm') {
-        await submitOrder({
-          Status: 5,
-          OrderID: OrderId,
-          CancelReasonID: 1,
-          Comment: '',
-          WishingDate: null,
-        });
-      } else if (currentAction === 'checkout') {
-        await submitOrder({
-          Status: 7,
-          OrderID: OrderId,
-          CancelReasonID: 1,
-          Comment: '',
-          WishingDate: null,
-        });
-        navigate('/');
-      }
-      onClose();
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Error updating order status:', error);
-    }
-  };
+  const handleConfirm = useCallback(() => {
+    setIsSubmitting(true);
+    const newStatus = currentAction === 'confirm' ? 5 : 7;
+
+    submitOrder({
+      Status: newStatus,
+      OrderID: OrderId,
+      CancelReasonID: 1,
+      Comment: '',
+      WishingDate: null,
+    })
+      .then(() => {
+        console.log('Status updated');
+      })
+      .catch((error) => {
+        console.error('Error updating order status:', error);
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+        onClose();
+      });
+  }, [currentAction, OrderId, submitOrder, onClose, toast]);
 
   const renderButton = () => {
     if (Status === 5) {
       return (
         <Button
+          colorScheme="green"
           height="35px"
           variant="outline"
           onClick={handlePostOrder}
           isLoading={isSubmitting}
           loadingText="Обработка..."
+          isDisabled={isSubmitting}
         >
           Доставить
         </Button>
@@ -64,11 +61,14 @@ function DeliveryButton({ Status, OrderId }) {
     if (Status === 6) {
       return (
         <Button
+          colorScheme="red"
+          color="red"
           height="35px"
           variant="outline"
           onClick={handlePostOrderCheckout}
           isLoading={isSubmitting}
           loadingText="Обработка..."
+          isDisabled={isSubmitting}
         >
           Доставлен
         </Button>
@@ -77,7 +77,7 @@ function DeliveryButton({ Status, OrderId }) {
     if (Status === 7) {
       return (
         <Button height="35px" variant="outline" isDisabled>
-          Доставлен
+          Доставил
         </Button>
       );
     }
@@ -96,10 +96,15 @@ function DeliveryButton({ Status, OrderId }) {
       {renderButton()}
       <ConfirmationModal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={() => {
+          if (!isSubmitting) {
+            onClose();
+          }
+        }}
         onConfirm={handleConfirm}
         title={currentAction === 'confirm' ? 'Подтвердить заказ' : 'Заказ получен'}
         message={currentAction === 'confirm' ? 'Вы уверены, что хотите подтвердить этот заказ?' : 'Вы уверены, что заказ получен?'}
+        isLoading={isSubmitting}
       />
     </>
   );

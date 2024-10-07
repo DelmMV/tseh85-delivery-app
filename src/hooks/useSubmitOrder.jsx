@@ -37,8 +37,7 @@ export const useSubmitOrder = () => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });
       if (variables.Status === 7) {
         const currentOrders = queryClient.getQueryData(['orders']) || [];
-        const updatedOrder = { ...currentOrders.find((order) => order.OrderID === variables.OrderID), ...variables };
-        updateArchive([...currentOrders, updatedOrder]);
+        updateArchive([...currentOrders, { ...variables, Status: 7 }]);
       }
       toast({
         title: 'Заказ обновлен',
