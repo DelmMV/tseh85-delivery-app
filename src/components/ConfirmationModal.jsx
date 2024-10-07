@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 
 function ConfirmationModal({
-  isOpen, onClose, onConfirm, title, message, isLoading,
+  isOpen, onClose, onConfirm, title, message,
 }) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -26,7 +26,7 @@ function ConfirmationModal({
           <Button variant="ghost" onClick={onClose}>
             Отмена
           </Button>
-          <Button colorScheme="blue" onClick={onConfirm} isLoading={isLoading}>
+          <Button colorScheme="blue" onClick={onConfirm}>
             Подтвердить
           </Button>
         </ModalFooter>
