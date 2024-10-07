@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 
 function ConfirmationModal({
-f  isOpen, onClose, onConfirm, title, message,
+  isOpen, onClose, onConfirm, title, message,
 }) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
