@@ -96,15 +96,10 @@ function DeliveryButton({ Status, OrderId }) {
       {renderButton()}
       <ConfirmationModal
         isOpen={isOpen}
-        onClose={() => {
-          if (!isSubmitting) {
-            onClose();
-          }
-        }}
+        onClose={onClose}
         onConfirm={handleConfirm}
         title={currentAction === 'confirm' ? 'Подтвердить заказ' : 'Заказ получен'}
         message={currentAction === 'confirm' ? 'Вы уверены, что хотите подтвердить этот заказ?' : 'Вы уверены, что заказ получен?'}
-        isLoading={isSubmitting}
       />
     </>
   );
