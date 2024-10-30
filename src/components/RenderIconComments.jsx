@@ -1,8 +1,8 @@
 import { CgComment } from 'react-icons/cg';
 import { Text } from '@chakra-ui/react';
 
-function RenderIconComments({ comments }) {
-  if (!comments || comments.length === 0) {
+function RenderIconComments(props) {
+  if (!props) {
     return null; // Если массив пуст или отсутствует, возвращаем null
   }
   return (
