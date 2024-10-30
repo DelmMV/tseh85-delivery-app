@@ -17,7 +17,7 @@ export function sortOrders(orders) {
     return new Date(); // fallback to current date
   };
 
-  orders.forEach(order => {
+  orders.forEach((order) => {
     if (order.Status === 12) {
       newOrders.push(order);
     } else if (order.Nearest) {
@@ -42,7 +42,7 @@ export function sortOrders(orders) {
   };
 
   nearest.sort(sortByWishingDate);
-  Object.keys(timed).forEach(key => {
+  Object.keys(timed).forEach((key) => {
     timed[key].sort(sortByWishingDate);
   });
   newOrders.sort((a, b) => {
