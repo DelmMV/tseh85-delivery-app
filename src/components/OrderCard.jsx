@@ -126,28 +126,28 @@ function OrderCard({ order }) {
             <Box display="flex" flexDirection="row" alignItems="center">
               <Text fontSize="sm">Доставить:&#160;</Text>
               <Text fontSize="md" fontWeight="bold">
-                {convertTimestamp(WishingDate, 'HH:mm')}
+                {Nearest ? convertTimestamp(WishingDate, 'HH:mm') : (
+                  <Badge
+                    ml="1"
+                    fontSize="1em"
+                    colorScheme="red"
+                    sx={{
+                      display: 'inline-flex',
+                      animation: 'shake 0.82s cubic-bezier(.36,.07,.19,.97) infinite both',
+                      transform: 'translate3d(0, 0, 0)',
+                      backfaceVisibility: 'hidden',
+                      perspective: '1000px',
+                    }}
+                  >
+                    {convertTimestamp(WishingDate, 'HH:mm')}
+                  </Badge>
+                )}
               </Text>
             </Box>
             <Text fontSize="sm">
-              {Nearest ? (
+              {Nearest && (
                 <Badge ml="1" fontSize="0.8em" colorScheme="green">
                   Ближайшее
-                </Badge>
-              ) : (
-                <Badge
-                  ml="1"
-                  fontSize="0.8em"
-                  colorScheme="red"
-                  sx={{
-                    display: 'inline-flex',
-                    animation: 'shake 0.82s cubic-bezier(.36,.07,.19,.97) infinite both',
-                    transform: 'translate3d(0, 0, 0)',
-                    backfaceVisibility: 'hidden',
-                    perspective: '1000px',
-                  }}
-                >
-                  {convertTimestamp(WishingDate, 'HH:mm')}
                 </Badge>
               )}
             </Text>
