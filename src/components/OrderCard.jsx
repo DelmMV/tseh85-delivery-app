@@ -129,9 +129,10 @@ function OrderCard({ order }) {
                 {Nearest ? convertTimestamp(WishingDate, 'HH:mm') : (
                   <Badge
                     ml="1"
-                    fontSize="1em"
+                    fontSize="0.9em"
                     colorScheme="red"
                     sx={{
+                      borderRadius: '10px',
                       display: 'inline-flex',
                       animation: 'shake 0.82s cubic-bezier(.36,.07,.19,.97) infinite both',
                       transform: 'translate3d(0, 0, 0)',
