@@ -45,15 +45,8 @@ function OrderCard({ order }) {
     Longitude,
   } = order;
   const [isExpanded, setIsExpanded] = useState(() => {
-    try {
-      const saved = localStorage.getItem(`orderExpanded_${DeliveryNumber}`);
-      if (saved && Status === 6) {
-        localStorage.setItem(`orderExpanded_${DeliveryNumber}`, JSON.stringify(true));
-      }
-      return saved ? JSON.parse(saved) : false;
-    } catch (error) {
-      return false;
-    }
+    const saved = localStorage.getItem(`isExpanded_${DeliveryNumber}`);
+    return saved !== null ? JSON.parse(saved) : false;
   });
   const { mapType } = useMapType();
   const statusInfo = status(Status);
@@ -64,7 +57,7 @@ function OrderCard({ order }) {
   const shortenedAddress = Address.length > 65 ? `${Address.substring(0, 65)}...` : Address;
 
   useEffect(() => {
-    localStorage.setItem(`orderExpanded_${DeliveryNumber}`, JSON.stringify(isExpanded));
+    localStorage.setItem(`isExpanded_${DeliveryNumber}`, JSON.stringify(isExpanded));
   }, [isExpanded, DeliveryNumber]);
 
   return (
