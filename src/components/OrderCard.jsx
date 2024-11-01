@@ -46,19 +46,26 @@ function OrderCard({ order }) {
   } = order;
   const [isExpanded, setIsExpanded] = useState(() => {
     const saved = localStorage.getItem(`isExpanded_${DeliveryNumber}`);
-    return saved !== null ? JSON.parse(saved) : false;
+    return saved !== null ? JSON.parse(saved) : Status === 6;
   });
   const { mapType } = useMapType();
   const statusInfo = status(Status);
   const { copyText } = useCopyToClipboard();
 
-  const toggleExpand = () => setIsExpanded(!isExpanded);
+  const toggleExpand = () => {
+    const newState = !isExpanded;
+    setIsExpanded(newState);
+    localStorage.setItem(`isExpanded_${DeliveryNumber}`, JSON.stringify(newState));
+  };
 
   const shortenedAddress = Address.length > 65 ? `${Address.substring(0, 65)}...` : Address;
 
   useEffect(() => {
-    localStorage.setItem(`isExpanded_${DeliveryNumber}`, JSON.stringify(isExpanded));
-  }, [isExpanded, DeliveryNumber]);
+    if (Status === 6 && localStorage.getItem(`isExpanded_${DeliveryNumber}`) === null) {
+      setIsExpanded(true);
+      localStorage.setItem(`isExpanded_${DeliveryNumber}`, 'true');
+    }
+  }, [Status, DeliveryNumber]);
 
   return (
     <Card
